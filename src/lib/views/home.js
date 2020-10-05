@@ -17,10 +17,8 @@ const postTemplate = (doc) => {
  `;
   return div;
 };
-const options = postTemplate.querySelector('#options').value;
-options.addEventListener( 'click', () => {
-  
-});
+//const options = postTemplate.querySelector('#options').value;
+//options.addEventListener( 'click', () =>/* 
 
 export const profileTemplate = (posts) => {
   // console.log('user', user);
