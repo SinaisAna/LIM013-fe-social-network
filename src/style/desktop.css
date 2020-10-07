@@ -101,6 +101,11 @@ label #cross{
     border-radius: 30px;
     
 }
+.share-post:hover{
+    transform: translateY(-15px);
+    box-shadow: 0 12px 16px rgba(0, 0, 0,0.2);
+}
+
 #btn-share{
     float: right;
 }
@@ -211,4 +216,12 @@ i{
     width: 100px;
     float: right;
     border: none;
+    background: #C1CED0;
+}
+#heart-like{
+    font-size: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    color: red;
 }

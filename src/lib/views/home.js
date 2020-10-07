@@ -32,7 +32,7 @@ const postTemplate = (doc) => {
   <button type="button" id="accept"><i class="fas fa-check"></i></button>
   </div>
   <label id="dis-like"><i class="far fa-heart"></i></label>
-  <label id="like"><i class="fas fa-heart"></i></label>
+  <label id="like"><div id="heart-like" class="fas fa-heart"></div></label>
   <div id="num-likes" class="num-likes">${doc.data().likes.length}</div>
   <label><i id="i" class="far fa-comment"></i></label>
 
@@ -96,47 +96,77 @@ export const profileTemplate = (posts) => {
   // console.log('user', user);
   const viewProfile = document.createElement('section');
   viewProfile.innerHTML = ` 
-    <header>
-    <nav>
-    <div class="title-energy">
-    <h4 class="title">Energía Verde💡</h4></div>
-    <input type="checkbox" id="check-and-uncheck">
-    <label for="check-and-uncheck">
-    <i class="fas fa-bars" id="hamburger"></i>
-    <i class="fas fa-times" id="cross"></i>
-    </label>
-      <ul>
-        <li>
-            <a id="btn-log-out">Salir</a>
-        </li>
-      </ul>
-    </nav>
-    </header>
-    <section class="container-profile">
-      <h2>Perfil</h2>
-      <img class="user-image" src="${localStorage.getItem('userPhoto')}">
-      <p>${localStorage.getItem('userName')}</p>
-      <h3>Email</h3>
-      <p>${localStorage.getItem('userEmail')}</p>
-      </section>
-    </section>
-    <div id="post-container" class="post general-position">
-    <div >
-      <textarea id="box-post"class="textarea" placeholder="¿Qué quieres compartir?" maxlength="100" rows="8" cols="77">
-        </textarea>
-    </div>
-    <label><i id="i" class="far fa-images"></i>
-      <input class="file" type="file"></label>
-    <select class="space" id="mode-post">
-      <option value="" disabled selected>Modo</option>
-      <option id="private" value="private">Privado</option>
-      <option id="public" value="public">Publico</option>
-    </select>
-    <label class"plane"><i id="btn-share" class="far fa-paper-plane"></i></label>
+  <header>
+  <nav>
+  <div class="title-energy">
+  <h4 class="title">Energía Verde💡</h4></div>
+  <input type="checkbox" id="check-and-uncheck">
+  <label for="check-and-uncheck">
+  <i class="fas fa-bars" id="hamburger"></i>
+  <i class="fas fa-times" id="cross"></i>
+  </label>
+  <ul>
+  <li>
+  <a id="btn-log-out">Salir</a>
+  </li>
+  </ul>
+  </nav>
+  </header>
+  <section class="container-profile">
+  <h2>Perfil</h2>
+  <img class="user-image" src="${localStorage.getItem('userPhoto')}">
+  <p>${localStorage.getItem('userName')}</p>
+  <h3>Email</h3>
+   <p>${localStorage.getItem('userEmail')}</p>
+  </section>
+  </section>
+  <div id="post-container" class="post general-position">
+  <div>
+  <textarea id="box-post"class="textarea" placeholder="¿Qué quieres compartir?" maxlength="100" rows="8" cols="77">
+  </textarea>
+  </div>
+  <i id = "remove-img" style="display: none" class="fas fa-times-circle"></i>
+  <img id="post-img" class="post-img" src=""/>
+  <label for="add-new-photo">
+  <i id="i" class="far fa-images"></i>
+  <input class="file" type="file" id="add-new-photo">
+  </label>
+  <select class="space" id="mode-post">
+  <option value="" disabled selected>Modo</option>
+  <option id="private" value="private">Privado</option>
+  <option id="public" value="public">Publico</option>
+  </select>
+  <label class"plane"><i id="btn-share" class="far fa-paper-plane"></i></label>
   </div>
   <div id="message-post"> 
   </div>
   `;
+
+  const newPhoto = viewProfile.querySelector('#add-new-photo');
+  const remove = viewProfile.querySelector('#remove-img');
+  const postImg = viewProfile.querySelector('#post-img');
+  
+postImg.addEventListener('change', (e) => {
+    // Creamos el objeto de la clase FileReader
+    const reader = new FileReader();
+
+    // Leemos el archivo subido y se lo pasamos a nuestro fileReader
+    reader.readAsDataURL(e.target.files[0]);
+
+    // Le decimos que cuando este listo ejecute el código interno
+    reader.onload = () => {
+      newPhoto.src = reader.result;
+    };
+    // mostramos el botón de remover imagen
+    remove.removeAttribute('style');
+  });
+
+    /* ------------- Remove image post --------------------------*/
+    remove.addEventListener('click', () => {
+      newPhoto.src = '';
+      postImg.value = '';
+      remove.style.display = 'none';
+    });
 
   // Start grabbing our DOM Element
   const textPost = viewProfile.querySelector('#box-post');
