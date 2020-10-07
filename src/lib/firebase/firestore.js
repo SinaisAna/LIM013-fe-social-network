@@ -12,14 +12,14 @@ export const readUserDB = (uid) => firebase.firestore().collection('users')
   .get();
 
   //Posts
-export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser) => firebase.firestore()
+export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser ) => firebase.firestore()
   .collection('publications').add({
     creatorID: userID,
     creatorName: name,
     note: createNote,
     date: datePost,
     mode: userMode,
-    photoUser: photoUser,
+    photo: photoUser,
     likes:[],
     
   });
