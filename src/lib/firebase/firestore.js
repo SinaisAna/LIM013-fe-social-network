@@ -11,6 +11,7 @@ export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();
 
+  //Posts
 export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser) => firebase.firestore()
   .collection('publications').add({
     creatorID: userID,
@@ -19,13 +20,14 @@ export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoU
     date: datePost,
     mode: userMode,
     photoUser: photoUser,
+    likes:[],
     
   });
 
 // callbackfn es un funcion como parametro lo mando
 export const readAddNotesToDB = callbackfn => firebase.firestore()
   .collection('publications').orderBy("date","desc").onSnapshot((data) => {
-    console.log("data",data);
+    //console.log("data",data);
     callbackfn(data);
   });
 
@@ -39,3 +41,12 @@ export const editTextPost = (docID, changeNote, newDate) => firebase.firestore()
 // Delete post
 export const deletePost = (docID) => firebase.firestore().collection('publications')
   .doc(docID).delete();
+
+// ADD LIKE
+export const addLike = (idPost, uid) => firebase.firestore().collection('publications')
+.doc(idPost).update({ likes: firebase.firestore.FieldValue.arrayUnion(uid) });
+
+
+// REMOVE LIKE
+export const removeLike = (idPost, uid) => firebase.firestore().collection('publications')
+.doc(idPost).update({ likes: firebase.firestore.FieldValue.arrayRemove(uid) });

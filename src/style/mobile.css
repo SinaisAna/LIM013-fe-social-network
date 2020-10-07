@@ -129,4 +129,10 @@ p {
   background: #6fcf97;
   font-size: 20px;
 }
-
+.num-likes{
+  float: left;
+  position: relative;
+  font-size: 100%;
+  margin-top: 2%;
+  margin-left: 2%;
+}

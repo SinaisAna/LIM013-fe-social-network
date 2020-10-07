@@ -1,4 +1,5 @@
 import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,} from '../firebase-controller/home-controller.js';
+import { addLike,removeLike} from '../firebase/firestore.js';
 
 const formatoFecha = (fecha) =>{
   let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
@@ -30,12 +31,30 @@ const postTemplate = (doc) => {
   <textarea class="textarea" id="edit-text-post">${doc.data().note}</textarea>
   <button type="button" id="accept"><i class="fas fa-check"></i></button>
   </div>
-  <label><i id="i" class="far fa-heart"></i></label>
+  <label id="dis-like"><i class="far fa-heart"></i></label>
+  <label id="like"><i class="fas fa-heart"></i></label>
+  <div id="num-likes" class="num-likes">${doc.data().likes.length}</div>
   <label><i id="i" class="far fa-comment"></i></label>
 
-
  `;
+const like = div.querySelector('#like');
+const dislike = div.querySelector('#dis-like');
+if(doc.data().likes.indexOf(localStorage.getItem('userID'))>-1){
+  dislike.classList.add('hidden');
+}else{
+  like.classList.add('hidden');
+}
+like.addEventListener( 'click', () => {
+like.classList.add('hidden');
+dislike.classList.remove('hidden');
+removeLike(doc.id, localStorage.getItem('userID'));
+});
+dislike.addEventListener( 'click', () => {
+like.classList.remove('hidden');
+dislike.classList.add('hidden');
+addLike(doc.id, localStorage.getItem('userID'));
 
+});
   // Start grabbing our DOM Element
   const options = div.querySelector('#options');
   const showOptions = div.querySelector('#show-options');
