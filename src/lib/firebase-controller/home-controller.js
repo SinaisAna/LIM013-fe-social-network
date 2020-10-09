@@ -11,8 +11,8 @@ export const homeLogOut = () => {
     });
 };
 
-export const createAddNoteToDB = (userID, name, createNote, datePost, userMode, photoUser) => {
-  addNotesToDB(userID, name, createNote, datePost, userMode, photoUser)
+export const createAddNoteToDB = (userID, name, createNote, datePost, userMode, photoUser,image) => {
+  addNotesToDB(userID, name, createNote, datePost, userMode, photoUser,image)
     .then((docRef) => {
       localStorage.setItem('userName', name);
       localStorage.setItem('userPhoto', photoUser);

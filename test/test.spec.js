@@ -80,3 +80,4 @@ describe('logout', () => {
     expect(user).toBe(undefined);
   }));
 });
+

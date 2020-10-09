@@ -17,6 +17,7 @@ h2 {
   display: block;
   margin: auto;
   width: 100px;
+  margin-top: -7em;
 }
 .user-image-post{
 width: 65px;
@@ -107,7 +108,7 @@ p {
   display: block;
   padding: 10px;
   width: 100%;
-  margin: 30px 0 40px 0;
+  margin: 10px 0 30px 0;
   text-align: center;
   border: 0;
   border-radius: 50px;
@@ -122,11 +123,10 @@ p {
   display: block;
   padding: 10px 0;
   width: 100%;
-  margin: 80px 0;
   text-align: center;
   border: 0;
   border-radius: 50px;
-  background: #6fcf97;
+  background: linear-gradient(30deg, #ADFF2F,#7FFF00, #7CFC00, #00FF00, #32CD32);
   font-size: 20px;
 }
 .num-likes{
@@ -136,4 +136,18 @@ p {
   margin-top: 2%;
   margin-left: 4%;
   font-family: emoji;
+}
+#btn-logout{
+  background: linear-gradient(30deg, #ADFF2F,#7FFF00, #7CFC00, #00FF00, #32CD32);
+  color: black;
+  cursor: pointer;
+  opacity: 0.8;
+  display: block;
+  padding: 10px 0;
+  width: 40%;
+  margin: auto;
+  margin-top: 5%;
+  text-align: center;
+  border: 0;
+  border-radius: 50px;
 }

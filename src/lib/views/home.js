@@ -1,6 +1,6 @@
 import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,} from '../firebase-controller/home-controller.js';
-import { addLike,removeLike} from '../firebase/firestore.js';
-
+import { addLike,removeLike,uploadImage} from '../firebase/firestore.js';
+let postImage;
 const formatoFecha = (fecha) =>{
   let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
   return fechaFin;
@@ -9,6 +9,10 @@ const formatoFecha = (fecha) =>{
 const postTemplate = (doc) => {
 //const user=readUser(doc.data().creatorID);
 //console.log("userHome",user);
+let divimage="";
+if(doc.data().image!=null){
+  divimage='<img src="'+doc.data().image+'" width="100" heigth="150">';
+}
   const div = document.createElement('div');
   console.log("id",doc.data());
   div.classList = 'share-post';
@@ -26,7 +30,7 @@ const postTemplate = (doc) => {
   </select></label></h4>
   </div>
   </div>
-  <div id="text-post" class="show"><p>${doc.data().note}</p></div>
+  <div id="text-post" class="show"><p>${doc.data().note}</p><p>${divimage}</p></div>
   <div id="edit-option" class="hidden">
   <textarea class="textarea" id="edit-text-post">${doc.data().note}</textarea>
   <button type="button" id="accept"><i class="fas fa-check"></i></button>
@@ -113,7 +117,7 @@ export const profileTemplate = (posts) => {
   </nav>
   </header>
   <section class="container-profile">
-  <h2>Perfil</h2>
+  <div><img src="../img/escritorios.png" class="init"</div>
   <img class="user-image" src="${localStorage.getItem('userPhoto')}">
   <p>${localStorage.getItem('userName')}</p>
   <h3>Email</h3>
@@ -125,11 +129,11 @@ export const profileTemplate = (posts) => {
   <textarea id="box-post"class="textarea" placeholder="¿Qué quieres compartir?" maxlength="100" rows="8" cols="77">
   </textarea>
   </div>
-  <i id = "remove-img" style="display: none" class="fas fa-times-circle"></i>
-  <img id="post-img" class="post-img" src=""/>
-  <label for="add-new-photo">
-  <i id="i" class="far fa-images"></i>
-  <input class="file" type="file" id="add-new-photo">
+  <span class="deletImg hidden" id="exit">❎</span>
+  <div id="imgURL" class="imgURL"></div>
+  <label id="add-new-photo">
+  <i id="btn-photo" class="far fa-images"></i>
+  <input type="file" id="photoPost" class="file" accept="image/*">
   </label>
   <select class="space" id="mode-post">
   <option value="" disabled selected>Modo</option>
@@ -142,32 +146,28 @@ export const profileTemplate = (posts) => {
   </div>
   `;
 
+  const form = viewProfile.querySelector('#photoPost');
+  const imgURL = viewProfile.querySelector('#imgURL');
+  const btn_photo = viewProfile.querySelector('#btn-photo');
+  const exit = viewProfile.querySelector('#exit');
   const newPhoto = viewProfile.querySelector('#add-new-photo');
-  const remove = viewProfile.querySelector('#remove-img');
-  const postImg = viewProfile.querySelector('#post-img');
-  
-postImg.addEventListener('change', (e) => {
-    // Creamos el objeto de la clase FileReader
-    const reader = new FileReader();
 
-    // Leemos el archivo subido y se lo pasamos a nuestro fileReader
-    reader.readAsDataURL(e.target.files[0]);
-
-    // Le decimos que cuando este listo ejecute el código interno
-    reader.onload = () => {
-      newPhoto.src = reader.result;
-    };
-    // mostramos el botón de remover imagen
-    remove.removeAttribute('style');
+  form.addEventListener('change', (e) => {
+        postImage = e.target.files[0];
+        //console.log(file, "file");
+        //localStorage.setItem('img',file);
+        const objectURL = URL.createObjectURL(postImage)
+        console.log(objectURL, "objeto");
+        imgURL.innerHTML='<img src="'+objectURL+'" width="100" heigth="150">';
+        exit.classList.remove('hidden');
+        newPhoto.classList.add('hidden');
   });
 
-    /* ------------- Remove image post --------------------------*/
-    remove.addEventListener('click', () => {
-      newPhoto.src = '';
-      postImg.value = '';
-      remove.style.display = 'none';
-    });
-
+  exit.addEventListener('click', ()=> {
+    imgURL.innerHTML='<img src="">'; 
+    exit.classList.add('hidden');
+    newPhoto.classList.remove('hidden');
+  });
   // Start grabbing our DOM Element
   const textPost = viewProfile.querySelector('#box-post');
   
@@ -181,6 +181,7 @@ postImg.addEventListener('change', (e) => {
     btnShare.addEventListener('click', () => {
       const textPostVal = textPost.value;
       const date = new Date();
+      
       createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, selectedMode);
 
       // Clear text content
@@ -199,8 +200,18 @@ postImg.addEventListener('change', (e) => {
     const postVal = post.value;
     console.log(postVal, 'provando valor')
     const date = new Date();
-    createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, postVal,localStorage.getItem("userPhoto"));
+    console.log('photo',postImage);
+    const datePhoto = new Date().toString();
+        console.log(postImage);
+        if(postImage==null){
+          createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, postVal,localStorage.getItem("userPhoto"),"");
 
+        }else{
+          uploadImage(datePhoto, postImage)
+          .then((url) => createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, postVal,localStorage.getItem("userPhoto"),url));
+  
+        }
+	    	
   });
 
   const btnlogOut = viewProfile.querySelector('#btn-log-out');

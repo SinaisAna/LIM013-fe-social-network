@@ -12,7 +12,7 @@ export const readUserDB = (uid) => firebase.firestore().collection('users')
   .get();
 
   //Posts
-export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser ) => firebase.firestore()
+export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser ,image) => firebase.firestore()
   .collection('publications').add({
     creatorID: userID,
     creatorName: name,
@@ -21,6 +21,7 @@ export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoU
     mode: userMode,
     photo: photoUser,
     likes:[],
+    image:image,
     
   });
 
@@ -50,3 +51,11 @@ export const addLike = (idPost, uid) => firebase.firestore().collection('publica
 // REMOVE LIKE
 export const removeLike = (idPost, uid) => firebase.firestore().collection('publications')
 .doc(idPost).update({ likes: firebase.firestore.FieldValue.arrayRemove(uid) });
+
+// PHOTO 
+export const uploadImage = (date, image) => {
+  const postImageRef = firebase.storage().ref().child(`images/${date}-${image.name}`);
+  const metadata = { contentType: image.type };
+  return postImageRef.put(image, metadata)
+  .then(snapshot => snapshot.ref.getDownloadURL());
+}
