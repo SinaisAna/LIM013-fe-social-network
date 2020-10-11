@@ -119,9 +119,11 @@ export const profileTemplate = (posts) => {
   <section class="container-profile">
   <div><img src="../img/escritorios.png" class="init"</div>
   <img class="user-image" src="${localStorage.getItem('userPhoto')}">
-  <p>${localStorage.getItem('userName')}</p>
+  <div><p id="edit-user-name">${localStorage.getItem('userName')}</p></div>
   <h3>Email</h3>
    <p>${localStorage.getItem('userEmail')}</p>
+   <button class="editPost" id="editPost"><i class="far fa-edit"></i></button>
+   <button class="editPost hidden" id="exitPost"><i class="far fa-save" aria-hidden="true"></i></button>
   </section>
   </section>
   <div id="post-container" class="post general-position">
@@ -145,6 +147,15 @@ export const profileTemplate = (posts) => {
   <div id="message-post"> 
   </div>
   `;
+  const editPost = viewProfile.querySelector('#editPost');
+  const exitPost = viewProfile.querySelector('#exitPost');
+  const editUserName = viewProfile.querySelector('#edit-user-name');
+
+  editPost.addEventListener( 'click', () =>{
+    editPost.classList.add('hidden')
+    exitPost.classList.remove('hidden')
+    editUserName.innerHTML ='<input type="text" value="'+localStorage.getItem('userName')+'">'
+  });
 
   const form = viewProfile.querySelector('#photoPost');
   const imgURL = viewProfile.querySelector('#imgURL');
@@ -175,7 +186,7 @@ export const profileTemplate = (posts) => {
   const btnShare = viewProfile.querySelector('#btn-share');
   const modePost = viewProfile.querySelector('#mode-post');
 
-  modePost.addEventListener('change', (e) => {
+  /*modePost.addEventListener('change', (e) => {
     const selectedMode = e.target.value;
     // Share post
     btnShare.addEventListener('click', () => {
@@ -188,7 +199,7 @@ export const profileTemplate = (posts) => {
       // listPublication();
     });
   });
-
+*/
   posts.forEach((post) => {
     
     const messagePost = viewProfile.querySelector('#message-post');
