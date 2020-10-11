@@ -241,3 +241,8 @@ i{
     background: white;
     border: none;
 }
+.registerPhoto{
+    width: 100%;
+    background: url('../img/register.png') no-repeat;
+    background-size: cover;
+}
