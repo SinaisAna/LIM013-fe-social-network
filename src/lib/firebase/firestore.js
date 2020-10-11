@@ -7,6 +7,16 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username) => fire
 
   });
 
+  export const getUser = (callback) =>
+  firebase.firestore().collection('users')
+    .onSnapshot((querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      callback(data);
+    });
+
 export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();
