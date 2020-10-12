@@ -7,7 +7,7 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username) => fire
 
   });
 
-  export const getUser = (callback) =>
+  export const getUserInformation = (callback) =>
   firebase.firestore().collection('users')
     .onSnapshot((querySnapshot) => {
       const data = [];
@@ -23,7 +23,7 @@ export const readUserDB = (uid) => firebase.firestore().collection('users')
 
   //Posts
 export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser ,image) => firebase.firestore()
-  .collection('publications').add({
+  .collection('pruebas').add({
     creatorID: userID,
     creatorName: name,
     note: createNote,
@@ -37,29 +37,29 @@ export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoU
 
 // callbackfn es un funcion como parametro lo mando
 export const readAddNotesToDB = callbackfn => firebase.firestore()
-  .collection('publications').orderBy("date","desc").onSnapshot((data) => {
+  .collection('pruebas').orderBy("date","desc").onSnapshot((data) => {
     //console.log("data",data);
     callbackfn(data);
   });
 
 // Update post
-export const editTextPost = (docID, changeNote, newDate) => firebase.firestore().collection('publications')
+export const editTextPost = (docID, changeNote, newDate) => firebase.firestore().collection('pruebas')
   .doc(docID).update({
     note: changeNote,
     date: newDate,
   });
 
 // Delete post
-export const deletePost = (docID) => firebase.firestore().collection('publications')
+export const deletePost = (docID) => firebase.firestore().collection('pruebas')
   .doc(docID).delete();
 
 // ADD LIKE
-export const addLike = (idPost, uid) => firebase.firestore().collection('publications')
+export const addLike = (idPost, uid) => firebase.firestore().collection('pruebas')
 .doc(idPost).update({ likes: firebase.firestore.FieldValue.arrayUnion(uid) });
 
 
 // REMOVE LIKE
-export const removeLike = (idPost, uid) => firebase.firestore().collection('publications')
+export const removeLike = (idPost, uid) => firebase.firestore().collection('pruebas')
 .doc(idPost).update({ likes: firebase.firestore.FieldValue.arrayRemove(uid) });
 
 // PHOTO 

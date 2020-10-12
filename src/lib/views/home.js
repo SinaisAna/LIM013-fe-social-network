@@ -157,9 +157,9 @@ export const profileTemplate = (posts) => {
     editUserName.innerHTML ='<input type="text" value="'+localStorage.getItem('userName')+'">'
   });
 
+  //URL PHOTO COMMENTS
   const form = viewProfile.querySelector('#photoPost');
   const imgURL = viewProfile.querySelector('#imgURL');
-  const btn_photo = viewProfile.querySelector('#btn-photo');
   const exit = viewProfile.querySelector('#exit');
   const newPhoto = viewProfile.querySelector('#add-new-photo');
 
