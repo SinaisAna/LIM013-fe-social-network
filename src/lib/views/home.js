@@ -5,7 +5,6 @@ const formatoFecha = (fecha) =>{
   let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
   return fechaFin;
 }
-
 const postTemplate = (doc) => {
 //const user=readUser(doc.data().creatorID);
 //console.log("userHome",user);

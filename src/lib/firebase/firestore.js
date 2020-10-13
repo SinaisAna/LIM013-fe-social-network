@@ -7,6 +7,7 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username) => fire
 
   });
 
+
   export const getUserInformation = (callback) =>
   firebase.firestore().collection('users')
     .onSnapshot((querySnapshot) => {
