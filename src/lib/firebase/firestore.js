@@ -11,8 +11,8 @@ export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();
 
-  //Posts
-export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser) => firebase.firestore()
+export const addNotesToDB = (userID, name, createNote, datePost, userMode, photoUser) => firebase
+  .firestore()
   .collection('publications').add({
     creatorID: userID,
     creatorName: name,
