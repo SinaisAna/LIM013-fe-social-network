@@ -1,17 +1,17 @@
 import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,} from '../firebase-controller/home-controller.js';
-import { addLike,removeLike,uploadImage} from '../firebase/firestore.js';
+import { addLike, removeLike, uploadImage, readComments, addcommentsToDB } from '../firebase/firestore.js';
 let postImage;
-const formatoFecha = (fecha) =>{
+const formatDate = (fecha) =>{
   let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
   return fechaFin;
 }
 const postTemplate = (doc) => {
-//const user=readUser(doc.data().creatorID);
-//console.log("userHome",user);
-let divimage="";
-if(doc.data().image!=null){
-  divimage='<img src="'+doc.data().image+'" width="100" heigth="150">';
-}
+  //const user=readUser(doc.data().creatorID);
+  //console.log("userHome",user);
+  let divimage="";
+  if(doc.data().image!=null){
+    divimage='<img src="'+doc.data().image+'" width="100" heigth="150">';
+  }
   const div = document.createElement('div');
   console.log("id",doc.data());
   div.classList = 'share-post';
@@ -19,7 +19,7 @@ if(doc.data().image!=null){
   <div class="container-user">
   <span><img class="user-image-post" src="${doc.data().photo}"></span>
   <h4 class="name-user">Publicado por ${doc.data().creatorName}
-  <h4 class="name-user">${formatoFecha(doc.data().date.toDate())}</h4>
+  <h4 class="name-user">${formatDate(doc.data().date.toDate())}</h4>
   <div id="show-options" class="hidden">
   <label class="ellipsis" id="ellipsis" ><i id="i" class="fas fa-ellipsis-h"></i>
   <select id="options">
@@ -37,27 +37,64 @@ if(doc.data().image!=null){
   <label id="dis-like"><i class="far fa-heart"></i></label>
   <label id="like"><div id="heart-like" class="fas fa-heart"></div></label>
   <div id="num-likes" class="num-likes">${doc.data().likes.length}</div>
-  <label><i id="i" class="far fa-comment"></i></label>
+  <label id="btnComments"><i class="far fa-comment"></i></label>
+  <label id="uncomment" class="hidden"><i class="far fa-comment-dots"></i></label>
+  <div id="new-comment" class="coment-conter hidden">
+  <img class="user-image-comments" src="${localStorage.getItem('userPhoto')}">
+  <label id="inputCommentid">
+  <textarea type="text" id="inputComment" placeholder="Agregar un commentario..." class="inputComment" rows="8" cols="77">
+  </textarea></label>
+  <label id="square"><i class="far fa-share-square"></i></label>
+  </div>
+  <div id="all-comments" class="hidden"></div>
 
  `;
-const like = div.querySelector('#like');
-const dislike = div.querySelector('#dis-like');
-if(doc.data().likes.indexOf(localStorage.getItem('userID'))>-1){
-  dislike.classList.add('hidden');
-}else{
-  like.classList.add('hidden');
-}
-like.addEventListener( 'click', () => {
-like.classList.add('hidden');
-dislike.classList.remove('hidden');
-removeLike(doc.id, localStorage.getItem('userID'));
-});
-dislike.addEventListener( 'click', () => {
-like.classList.remove('hidden');
-dislike.classList.add('hidden');
-addLike(doc.id, localStorage.getItem('userID'));
+  const btnComments = div.querySelector('#btnComments');
+  const allcomments = div.querySelector('#all-comments');
+  const comentConter = div.querySelector('#new-comment');
+  const inputComment = div.querySelector('#inputComment');
+  const uncomment = div.querySelector('#uncomment');
+  const square = div.querySelector('#square');
 
-});
+  btnComments.addEventListener('click', () =>{
+  comentConter.classList.remove('hidden');
+  btnComments.classList.add('hidden');
+  uncomment.classList.remove('hidden');
+  allcomments.classList.remove('hidden');
+  });
+
+  uncomment.addEventListener('click', () =>{
+    comentConter.classList.add('hidden');
+    btnComments.classList.remove('hidden');
+    uncomment.classList.add('hidden');
+    allcomments.classList.add('hidden');
+  });
+  square.addEventListener('click', ()=>{
+    const inputCommentVal = inputComment.value;
+    const inputCommentid = div.querySelector('#inputCommentid');
+    const date = new Date();
+    inputCommentid.innerHTML = '<textarea type="text" id="inputComment" placeholder="Agregar un commentario..." class="inputComment" rows="8" cols="77"></textarea>';
+    addcommentsToDB(localStorage.getItem('userID'),inputCommentVal,date,localStorage.getItem('userPhoto'),doc.id,localStorage.getItem('userName'))
+    });
+
+  const like = div.querySelector('#like');
+  const dislike = div.querySelector('#dis-like');
+  if(doc.data().likes.indexOf(localStorage.getItem('userID'))>-1){
+    dislike.classList.add('hidden');
+  }else{
+    like.classList.add('hidden');
+  }
+  like.addEventListener( 'click', () => {
+  like.classList.add('hidden');
+  dislike.classList.remove('hidden');
+  removeLike(doc.id, localStorage.getItem('userID'));
+  });
+  dislike.addEventListener( 'click', () => {
+  like.classList.remove('hidden');
+  dislike.classList.add('hidden');
+  addLike(doc.id, localStorage.getItem('userID'));
+
+  });
   // Start grabbing our DOM Element
   const options = div.querySelector('#options');
   const showOptions = div.querySelector('#show-options');
@@ -92,6 +129,41 @@ addLike(doc.id, localStorage.getItem('userID'));
       }
     });
   }
+  const commentTemplate = (doc) => {
+    const newComentsUser = document.createElement('div');
+  console.log(doc.photoUser);
+
+  newComentsUser.classList = 'conter-coments';
+  newComentsUser.innerHTML = `
+  <div><img class="user-image-comments-app" src="${doc.photoUser}">
+  <div class="cloud">
+  <h4 class="user-app">${doc.userName}</h4>
+  <h4 class="document-app">${doc.comment}</h4>
+  <h4class="date-app">${formatDate(doc.date.toDate())}</h4>
+  </div>`;
+  return newComentsUser;
+  }
+  const readingComment = (comments, idPost) => {
+    
+    const container = div.querySelector('#all-comments');
+    const uidUser = firebase.auth().currentUser.uid;
+    if (container) {
+      container.innerHTML = '';
+
+      comments.forEach((comment) => {
+        
+        if (idPost === comment.postID) {
+          console.log("entro",idPost,comment);
+          const divComment = commentTemplate(comment);
+          container.appendChild(divComment);
+        }
+      });
+    }
+  
+    return container;
+  }
+  readComments(readingComment, doc.id);
+  
   return div;
 };
 
@@ -121,7 +193,7 @@ export const profileTemplate = (posts) => {
   <div><p id="edit-user-name">${localStorage.getItem('userName')}</p></div>
   <h3>Email</h3>
    <p>${localStorage.getItem('userEmail')}</p>
-   <button class="editPost" id="editPost"><i class="far fa-edit"></i></button>
+   <button class="editPost hidden" id="editPost"><i class="far fa-edit"></i></button>
    <button class="editPost hidden" id="exitPost"><i class="far fa-save" aria-hidden="true"></i></button>
   </section>
   </section>
@@ -146,6 +218,7 @@ export const profileTemplate = (posts) => {
   <div id="message-post"> 
   </div>
   `;
+  /*
   const editPost = viewProfile.querySelector('#editPost');
   const exitPost = viewProfile.querySelector('#exitPost');
   const editUserName = viewProfile.querySelector('#edit-user-name');
@@ -155,7 +228,7 @@ export const profileTemplate = (posts) => {
     exitPost.classList.remove('hidden')
     editUserName.innerHTML ='<input type="text" value="'+localStorage.getItem('userName')+'">'
   });
-
+*/
   //URL PHOTO COMMENTS
   const form = viewProfile.querySelector('#photoPost');
   const imgURL = viewProfile.querySelector('#imgURL');
@@ -183,26 +256,11 @@ export const profileTemplate = (posts) => {
   
   const post = viewProfile.querySelector('#mode-post');
   const btnShare = viewProfile.querySelector('#btn-share');
-  const modePost = viewProfile.querySelector('#mode-post');
-
-  /*modePost.addEventListener('change', (e) => {
-    const selectedMode = e.target.value;
-    // Share post
-    btnShare.addEventListener('click', () => {
-      const textPostVal = textPost.value;
-      const date = new Date();
-      
-      createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, selectedMode);
-
-      // Clear text content
-      // listPublication();
-    });
-  });
-*/
   posts.forEach((post) => {
     
     const messagePost = viewProfile.querySelector('#message-post');
     messagePost.appendChild(postTemplate(post));
+
   });
   // Share post
   btnShare.addEventListener('click', () => {

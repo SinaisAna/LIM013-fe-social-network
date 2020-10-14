@@ -70,3 +70,30 @@ export const uploadImage = (date, image) => {
   return postImageRef.put(image, metadata)
   .then(snapshot => snapshot.ref.getDownloadURL());
 }
+//Posts
+export const addcommentsToDB = (userID, comment,datePost,photoUser, postID, name) => firebase.firestore()
+  .collection('comments').add({
+
+    creatorID: userID,
+    photoUser: photoUser,
+    comment: comment,
+    date: datePost,
+    postID:postID,
+    userName:name,
+    
+  });
+
+
+  export const readComments = (callback, idPost) => {
+    firebase.firestore().collection('comments')
+      .orderBy('date', 'desc')
+      .onSnapshot((querySanpshot) => {
+        const comment = [];
+        querySanpshot.forEach((doc) => {
+          comment.push({ id: doc.id, ...doc.data() });
+        });
+        //console.log('data',comment);
+        callback(comment, idPost);
+      });
+  };
+  

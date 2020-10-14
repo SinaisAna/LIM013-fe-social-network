@@ -246,3 +246,52 @@ i{
     background: url('../img/register.png') no-repeat;
     background-size: cover;
 }
+.coment-conter{
+    width: 100%;
+    background: #C1CED0;
+    padding: 10px;
+    margin-top: 4%;
+    box-shadow: 0 5px 25px rgba(0,0,0,.5);
+    border-radius: 10px
+}
+.user-image-comments{
+    width: 50px;
+    border-radius: 50%;
+}
+.inputComment {
+    border: rgb(83, 78, 78);
+    background: #e9f0f2;
+    height: 40px;
+    margin: 1%;
+    width: 75%;
+    margin-top: 4%;
+    outline: none;
+    resize: none;
+    text-align: center;
+    border-radius: 50px;
+}
+
+.user-image-comments-app{
+    width: 50px;
+    border-radius: 50%;
+    float: left;
+}
+.cloud{
+    border: rgb(83, 78, 78);
+    background: #e9f0f2;
+    margin: 1%;
+    margin-top: 4%;
+    outline: none;
+    resize: none;
+    margin-left: 10%;
+    padding: 1%;
+    padding-left: 3%;
+    border-radius: 10px;
+}
+.user-app{
+    font-size: 20px;
+}
+.document-app{
+    font-size: 18px;
+    font-weight: normal;
+}
