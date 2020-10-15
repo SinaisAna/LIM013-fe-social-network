@@ -25,7 +25,7 @@ const changeTemplate = (hash) => {
             const user = refDoc.data();
             container.innerHTML = '';
             container.appendChild(components.profileTemplateProp(user));
-          
+  // aqui no puedo poner esa importacion debo llevarla a otro lado genial        
           });
       });
       //return readUserDB(user.uid)

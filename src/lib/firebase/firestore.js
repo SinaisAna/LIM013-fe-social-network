@@ -22,8 +22,8 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username) => fire
 export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();
-
-  export const readUsercurrentDB = () =>{
+// agregarle un callback
+  export const readUsercurrentDB = (callback) =>{
     const user = firebase.auth().currentUser;
     return firebase.firestore().collection('users')
     .where('uid', '==', user.uid)
@@ -48,6 +48,7 @@ export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoU
 export const readAddNotesToDB = callbackfn => firebase.firestore()
   .collection('pruebas').orderBy("date","desc").onSnapshot((data) => {
     //console.log("data",data);
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     callbackfn(data);
   });
 
