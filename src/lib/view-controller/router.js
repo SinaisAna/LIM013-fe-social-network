@@ -1,4 +1,4 @@
-import { readAddNotesToDB } from '../firebase/firestore.js';
+import { readUsercurrentDB } from '../firebase/firestore.js';
 import { components } from '../views/components.js';
 
 // Change Template
@@ -18,11 +18,22 @@ const changeTemplate = (hash) => {
     case '#/signup':
     { return container.appendChild(components.signUpTemplateProp()); }
     case '#/home':
-    { return readAddNotesToDB((data) => {
+    { const user = firebase.auth().currentUser;
+      return readUsercurrentDB()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((refDoc) => {
+            const user = refDoc.data();
+            container.innerHTML = '';
+            container.appendChild(components.profileTemplateProp(user));
+          
+          });
+      });
+      //return readUserDB(user.uid)
+      //return readAddNotesToDB((data) => {
       // console.log(data);
-      container.innerHTML = '';
-      container.appendChild(components.profileTemplateProp(data));
-    });
+        //container.innerHTML = '';
+        //container.appendChild(components.profileTemplateProp(data));
+      //});
     }
     default:
       return container.appendChild(components.errorPageProp());

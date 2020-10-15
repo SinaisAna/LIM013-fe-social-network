@@ -6,15 +6,8 @@ const imgProfileUserDefault = '../img/userProfile.png';
 export const createUser = (email, password, name) => {
   createUserAccount(email, password)
     .then((res) => {
-      // Open home template
       window.location.hash = '#/home';
-      // Save user data in firebase
       createUserDB(res.user.uid, email, imgProfileUserDefault, name);
-
-      localStorage.setItem('userID', res.user.uid);
-      localStorage.setItem('userName', name);
-      localStorage.setItem('userEmail', email);
-      localStorage.setItem('userPhoto', imgProfileUserDefault);
     })
     .catch((error) => {
       const errorCode = error.code;

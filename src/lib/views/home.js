@@ -1,13 +1,14 @@
 import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,} from '../firebase-controller/home-controller.js';
-import { addLike, removeLike, uploadImage, readComments, addcommentsToDB } from '../firebase/firestore.js';
+import { addLike, removeLike, uploadImage, readComments, addcommentsToDB, readAddNotesToDB } from '../firebase/firestore.js';
 let postImage;
 const formatDate = (fecha) =>{
   let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
   return fechaFin;
 }
-const postTemplate = (doc) => {
+const postTemplate = (doc,user) => {
   //const user=readUser(doc.data().creatorID);
   //console.log("userHome",user);
+  
   let divimage="";
   if(doc.data().image!=null){
     divimage='<img src="'+doc.data().image+'" width="100" heigth="150">';
@@ -40,7 +41,7 @@ const postTemplate = (doc) => {
   <label id="btnComments"><i class="far fa-comment"></i></label>
   <label id="uncomment" class="hidden"><i class="far fa-comment-dots"></i></label>
   <div id="new-comment" class="coment-conter hidden">
-  <img class="user-image-comments" src="${localStorage.getItem('userPhoto')}">
+  <img class="user-image-comments" src="${user.photoUrl}">
   <label id="inputCommentid">
   <textarea type="text" id="inputComment" placeholder="Agregar un commentario..." class="inputComment" rows="8" cols="77">
   </textarea></label>
@@ -74,12 +75,12 @@ const postTemplate = (doc) => {
     const inputCommentid = div.querySelector('#inputCommentid');
     const date = new Date();
     inputCommentid.innerHTML = '<textarea type="text" id="inputComment" placeholder="Agregar un commentario..." class="inputComment" rows="8" cols="77"></textarea>';
-    addcommentsToDB(localStorage.getItem('userID'),inputCommentVal,date,localStorage.getItem('userPhoto'),doc.id,localStorage.getItem('userName'))
+    addcommentsToDB(user.uid,inputCommentVal,date,user.photoUrl,doc.id,user.name)
     });
 
   const like = div.querySelector('#like');
   const dislike = div.querySelector('#dis-like');
-  if(doc.data().likes.indexOf(localStorage.getItem('userID'))>-1){
+  if(doc.data().likes.indexOf(user.uid)>-1){
     dislike.classList.add('hidden');
   }else{
     like.classList.add('hidden');
@@ -87,12 +88,12 @@ const postTemplate = (doc) => {
   like.addEventListener( 'click', () => {
   like.classList.add('hidden');
   dislike.classList.remove('hidden');
-  removeLike(doc.id, localStorage.getItem('userID'));
+  removeLike(doc.id, user.uid);
   });
   dislike.addEventListener( 'click', () => {
   like.classList.remove('hidden');
   dislike.classList.add('hidden');
-  addLike(doc.id, localStorage.getItem('userID'));
+  addLike(doc.id, user.uid);
 
   });
   // Start grabbing our DOM Element
@@ -102,7 +103,7 @@ const postTemplate = (doc) => {
   const editOption = div.querySelector('#edit-option');
   const accept = div.querySelector('#accept');
   // Edit and delete post
-  if (localStorage.getItem('userID') === doc.data().creatorID) {
+  if (user.uid === doc.data().creatorID) {
     showOptions.classList.remove('hidden');
     showOptions.classList.add('show');
     options.addEventListener('change', (e) => {
@@ -146,7 +147,7 @@ const postTemplate = (doc) => {
   const readingComment = (comments, idPost) => {
     
     const container = div.querySelector('#all-comments');
-    const uidUser = firebase.auth().currentUser.uid;
+    
     if (container) {
       container.innerHTML = '';
 
@@ -167,8 +168,9 @@ const postTemplate = (doc) => {
   return div;
 };
 
-export const profileTemplate = (posts) => {
-  // console.log('user', user);
+export const profileTemplate = (user) => {
+ 
+   console.log('user', user);
   const viewProfile = document.createElement('section');
   viewProfile.innerHTML = ` 
   <header>
@@ -189,10 +191,10 @@ export const profileTemplate = (posts) => {
   </header>
   <section class="container-profile">
   <div><img src="../img/escritorios.png" class="init"</div>
-  <img class="user-image" src="${localStorage.getItem('userPhoto')}">
-  <div><p id="edit-user-name">${localStorage.getItem('userName')}</p></div>
+  <img class="user-image" src="${user.photoUrl}">
+  <div><p id="edit-user-name">${user.name}</p></div>
   <h3>Email</h3>
-   <p>${localStorage.getItem('userEmail')}</p>
+   <p>${user.email}</p>
    <button class="editPost hidden" id="editPost"><i class="far fa-edit"></i></button>
    <button class="editPost hidden" id="exitPost"><i class="far fa-save" aria-hidden="true"></i></button>
   </section>
@@ -256,12 +258,19 @@ export const profileTemplate = (posts) => {
   
   const post = viewProfile.querySelector('#mode-post');
   const btnShare = viewProfile.querySelector('#btn-share');
-  posts.forEach((post) => {
+  readAddNotesToDB((posts) => {
+    // console.log(data);
+      //container.innerHTML = '';
+      //container.appendChild(components.profileTemplateProp(data));
+      posts.forEach((post) => {
     
-    const messagePost = viewProfile.querySelector('#message-post');
-    messagePost.appendChild(postTemplate(post));
+        const messagePost = viewProfile.querySelector('#message-post');
+        messagePost.appendChild(postTemplate(post,user));
+    
+      });
+    });
 
-  });
+  
   // Share post
   btnShare.addEventListener('click', () => {
     const textPostVal = textPost.value;
@@ -272,11 +281,11 @@ export const profileTemplate = (posts) => {
     const datePhoto = new Date().toString();
         console.log(postImage);
         if(postImage==null){
-          createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, postVal,localStorage.getItem("userPhoto"),"");
+          createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal,user.photoUrl,"");
 
         }else{
           uploadImage(datePhoto, postImage)
-          .then((url) => createAddNoteToDB(localStorage.getItem('userID'), localStorage.getItem('userName'), textPostVal, date, postVal,localStorage.getItem("userPhoto"),url));
+          .then((url) => createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal,user.photoUrl,url));
   
         }
 	    	

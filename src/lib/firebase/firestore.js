@@ -18,10 +18,18 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username) => fire
       callback(data);
     });
 
+
 export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();
 
+  export const readUsercurrentDB = () =>{
+    const user = firebase.auth().currentUser;
+    return firebase.firestore().collection('users')
+    .where('uid', '==', user.uid)
+    .get();
+  } 
+  
   //Posts
 export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser ,image) => firebase.firestore()
   .collection('pruebas').add({
