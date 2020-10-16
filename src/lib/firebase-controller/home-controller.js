@@ -8,8 +8,9 @@ export const homeLogOut = () => {
       localStorage.removeItem('userName');
       localStorage.removeItem('userEmail');
       localStorage.removeItem('userPhoto');
-      window.location.hash = '#/login';
       */
+      //window.location.hash = '#/login';
+      
     });
 };
 

@@ -23,12 +23,6 @@ export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();
 
-  export const readUsercurrentDB = () =>{
-    const user = firebase.auth().currentUser;
-    return firebase.firestore().collection('users')
-    .where('uid', '==', user.uid)
-    .get();
-  } 
   
   //Posts
 export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoUser ,image) => firebase.firestore()
@@ -46,7 +40,15 @@ export const addNotesToDB = (userID, name, createNote,datePost, userMode, photoU
 
 // callbackfn es un funcion como parametro lo mando
 export const readAddNotesToDB = callbackfn => firebase.firestore()
-  .collection('pruebas').orderBy("date","desc").onSnapshot((data) => {
+  .collection('pruebas').where('mode','==','public').orderBy("date","desc").onSnapshot((data) => {
+    //console.log("data",data);
+    callbackfn(data);
+  });
+export const readAddNotesToDBP = (callbackfn,uid) => firebase.firestore()
+  .collection('pruebas')
+    .where('creatorID','==',uid)
+      
+        .orderBy("date","desc").onSnapshot((data) => {
     //console.log("data",data);
     callbackfn(data);
   });

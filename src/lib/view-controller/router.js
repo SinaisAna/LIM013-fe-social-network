@@ -1,10 +1,8 @@
-import { readUsercurrentDB } from '../firebase/firestore.js';
+import { readUserDB,readAddNotesToDB ,readAddNotesToDBP} from '../firebase/firestore.js';
 import { components } from '../views/components.js';
 
-// Change Template
 
 const changeTemplate = (hash) => {
-  // const id = hash.split('/')[1];
   const container = document.getElementById('container');
   container.innerHTML = '';
 
@@ -17,23 +15,38 @@ const changeTemplate = (hash) => {
     { return container.appendChild(components.loginTemplateProp()); }
     case '#/signup':
     { return container.appendChild(components.signUpTemplateProp()); }
+    case '#/profile':
     case '#/home':
-    { const user = firebase.auth().currentUser;
-      return readUsercurrentDB()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((refDoc) => {
-            const user = refDoc.data();
-            container.innerHTML = '';
-            container.appendChild(components.profileTemplateProp(user));
+    {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          readUserDB(user.uid)
+          .then((querySnapshot) => {
+            querySnapshot.forEach((refDoc) => {
+              if(hash=='#/home'){
+                readAddNotesToDB((posts) => {
+                  const user = refDoc.data();               
+                  container.innerHTML = '';
+                  return container.appendChild(components.profileTemplateProp(user,posts));
+                });
+              }else{
+                readAddNotesToDBP((posts) => {
+                  const user = refDoc.data();               
+                  container.innerHTML = '';
+                  return container.appendChild(components.profileTemplateProp(user,posts));
+                },user.uid);
+              }
+              
+            });
+        });
           
-          });
+          
+          
+        } else {
+          window.location.hash='#/login';
+        }
       });
-      //return readUserDB(user.uid)
-      //return readAddNotesToDB((data) => {
-      // console.log(data);
-        //container.innerHTML = '';
-        //container.appendChild(components.profileTemplateProp(data));
-      //});
+      
     }
     default:
       return container.appendChild(components.errorPageProp());

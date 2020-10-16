@@ -1,20 +1,19 @@
-import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,} from '../firebase-controller/home-controller.js';
-import { addLike, removeLike, uploadImage, readComments, addcommentsToDB, readAddNotesToDB } from '../firebase/firestore.js';
+import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB } from '../firebase-controller/home-controller.js';
+import { addLike, removeLike, uploadImage, readComments, addcommentsToDB } from '../firebase/firestore.js';
+import { headerTemplate } from './header.js';
 let postImage;
 const formatDate = (fecha) =>{
   let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
   return fechaFin;
 }
 const postTemplate = (doc,user) => {
-  //const user=readUser(doc.data().creatorID);
-  //console.log("userHome",user);
   
   let divimage="";
   if(doc.data().image!=null){
     divimage='<img src="'+doc.data().image+'" width="100" heigth="150">';
   }
   const div = document.createElement('div');
-  console.log("id",doc.data());
+  
   div.classList = 'share-post';
   div.innerHTML = `
   <div class="container-user">
@@ -110,8 +109,7 @@ const postTemplate = (doc,user) => {
       const selectedOption = e.target.value;
       // console.log(selectedOption);
       if (selectedOption === 'edit') {
-        console.log('Aquí puede editar');
-        console.log(doc.id);
+        
         // console.log(doc.data().creatorID);
         textPost.classList.add('hidden');
         textPost.classList.remove('show');
@@ -120,7 +118,7 @@ const postTemplate = (doc,user) => {
 
         accept.addEventListener('click', () => {
           const editTextPostVal = div.querySelector('#edit-text-post').value;
-          console.log(editTextPostVal);
+          
           const newDate = new Date();
           editTextPostToDB(doc.id, editTextPostVal, newDate);
         });
@@ -132,7 +130,7 @@ const postTemplate = (doc,user) => {
   }
   const commentTemplate = (doc) => {
     const newComentsUser = document.createElement('div');
-  console.log(doc.photoUser);
+  
 
   newComentsUser.classList = 'conter-coments';
   newComentsUser.innerHTML = `
@@ -154,7 +152,7 @@ const postTemplate = (doc,user) => {
       comments.forEach((comment) => {
         
         if (idPost === comment.postID) {
-          console.log("entro",idPost,comment);
+          
           const divComment = commentTemplate(comment);
           container.appendChild(divComment);
         }
@@ -168,69 +166,9 @@ const postTemplate = (doc,user) => {
   return div;
 };
 
-export const profileTemplate = (user) => {
+export const profileTemplate = (user,posts) => {
  
-   console.log('user', user);
-  const viewProfile = document.createElement('section');
-  viewProfile.innerHTML = ` 
-  <header>
-  <nav>
-  <div class="title-energy">
-  <h4 class="title">Energía Verde💡</h4></div>
-  <input type="checkbox" id="check-and-uncheck">
-  <label for="check-and-uncheck">
-  <i class="fas fa-bars" id="hamburger"></i>
-  <i class="fas fa-times" id="cross"></i>
-  </label>
-  <ul>
-  <li>
-  <a id="btn-log-out">Salir</a>
-  </li>
-  </ul>
-  </nav>
-  </header>
-  <section class="container-profile">
-  <div><img src="../img/escritorios.png" class="init"</div>
-  <img class="user-image" src="${user.photoUrl}">
-  <div><p id="edit-user-name">${user.name}</p></div>
-  <h3>Email</h3>
-   <p>${user.email}</p>
-   <button class="editPost hidden" id="editPost"><i class="far fa-edit"></i></button>
-   <button class="editPost hidden" id="exitPost"><i class="far fa-save" aria-hidden="true"></i></button>
-  </section>
-  </section>
-  <div id="post-container" class="post general-position">
-  <div>
-  <textarea id="box-post"class="textarea" placeholder="¿Qué quieres compartir?" maxlength="100" rows="8" cols="77">
-  </textarea>
-  </div>
-  <span class="deletImg hidden" id="exit">❎</span>
-  <div id="imgURL" class="imgURL"></div>
-  <label id="add-new-photo">
-  <i id="btn-photo" class="far fa-images"></i>
-  <input type="file" id="photoPost" class="file" accept="image/*">
-  </label>
-  <select class="space" id="mode-post">
-  <option value="" disabled selected>Modo</option>
-  <option id="private" value="private">Privado</option>
-  <option id="public" value="public">Publico</option>
-  </select>
-  <label class"plane"><i id="btn-share" class="far fa-paper-plane"></i></label>
-  </div>
-  <div id="message-post"> 
-  </div>
-  `;
-  /*
-  const editPost = viewProfile.querySelector('#editPost');
-  const exitPost = viewProfile.querySelector('#exitPost');
-  const editUserName = viewProfile.querySelector('#edit-user-name');
-
-  editPost.addEventListener( 'click', () =>{
-    editPost.classList.add('hidden')
-    exitPost.classList.remove('hidden')
-    editUserName.innerHTML ='<input type="text" value="'+localStorage.getItem('userName')+'">'
-  });
-*/
+   const viewProfile=headerTemplate(user);
   //URL PHOTO COMMENTS
   const form = viewProfile.querySelector('#photoPost');
   const imgURL = viewProfile.querySelector('#imgURL');
@@ -242,7 +180,7 @@ export const profileTemplate = (user) => {
         //console.log(file, "file");
         //localStorage.setItem('img',file);
         const objectURL = URL.createObjectURL(postImage)
-        console.log(objectURL, "objeto");
+        
         imgURL.innerHTML='<img src="'+objectURL+'" width="100" heigth="150">';
         exit.classList.remove('hidden');
         newPhoto.classList.add('hidden');
@@ -258,28 +196,21 @@ export const profileTemplate = (user) => {
   
   const post = viewProfile.querySelector('#mode-post');
   const btnShare = viewProfile.querySelector('#btn-share');
-  readAddNotesToDB((posts) => {
-    // console.log(data);
-      //container.innerHTML = '';
-      //container.appendChild(components.profileTemplateProp(data));
+
       posts.forEach((post) => {
-    
         const messagePost = viewProfile.querySelector('#message-post');
         messagePost.appendChild(postTemplate(post,user));
     
       });
-    });
-
-  
   // Share post
   btnShare.addEventListener('click', () => {
     const textPostVal = textPost.value;
     const postVal = post.value;
-    console.log(postVal, 'provando valor')
+    
     const date = new Date();
-    console.log('photo',postImage);
+    
     const datePhoto = new Date().toString();
-        console.log(postImage);
+        
         if(postImage==null){
           createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal,user.photoUrl,"");
 
