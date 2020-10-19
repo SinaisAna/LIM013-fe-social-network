@@ -1,5 +1,6 @@
 import { logOut } from '../firebase/auth.js';
-import { addNotesToDB, editTextPost, readAddNotesToDB, deletePost, readUserDB} from '../firebase/firestore.js';
+import { addNotesToDB, editTextPost, readAddNotesToDB, deletePost, readUserDB
+} from '../firebase/firestore.js';
 
 export const homeLogOut = () => {
   logOut()

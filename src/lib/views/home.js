@@ -1,19 +1,23 @@
-import { homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB } from '../firebase-controller/home-controller.js';
-import { addLike, removeLike, uploadImage, readComments, addcommentsToDB } from '../firebase/firestore.js';
+import {
+  homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,
+} from '../firebase-controller/home-controller.js';
+import {
+  addLike, removeLike, uploadImage, readComments, addcommentsToDB,
+} from '../firebase/firestore.js';
 import { headerTemplate } from './header.js';
+
 let postImage;
-const formatDate = (fecha) =>{
-  let fechaFin=(fecha.getDate())+" - "+(fecha.getMonth()+1)+" - "+fecha.getFullYear()+ "  "+ fecha.getHours()+":"+ fecha.getMinutes();
+const formatDate = (fecha) => {
+  const fechaFin = `${fecha.getDate()} - ${fecha.getMonth() + 1} - ${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`;
   return fechaFin;
-}
-const postTemplate = (doc,user) => {
-  
-  let divimage="";
-  if(doc.data().image!=null){
-    divimage='<img src="'+doc.data().image+'" width="100" heigth="150">';
+};
+const postTemplate = (doc, user) => {
+  let divimage = '';
+  if (doc.data().images != null) {
+    divimage = `<img src="${doc.data().images}" width="100" heigth="150">`;
   }
   const div = document.createElement('div');
-  
+
   div.classList = 'share-post';
   div.innerHTML = `
   <div class="container-user">
@@ -56,44 +60,43 @@ const postTemplate = (doc,user) => {
   const uncomment = div.querySelector('#uncomment');
   const square = div.querySelector('#square');
 
-  btnComments.addEventListener('click', () =>{
-  comentConter.classList.remove('hidden');
-  btnComments.classList.add('hidden');
-  uncomment.classList.remove('hidden');
-  allcomments.classList.remove('hidden');
+  btnComments.addEventListener('click', () => {
+    comentConter.classList.remove('hidden');
+    btnComments.classList.add('hidden');
+    uncomment.classList.remove('hidden');
+    allcomments.classList.remove('hidden');
   });
 
-  uncomment.addEventListener('click', () =>{
+  uncomment.addEventListener('click', () => {
     comentConter.classList.add('hidden');
     btnComments.classList.remove('hidden');
     uncomment.classList.add('hidden');
     allcomments.classList.add('hidden');
   });
-  square.addEventListener('click', ()=>{
+  square.addEventListener('click', () => {
     const inputCommentVal = inputComment.value;
     const inputCommentid = div.querySelector('#inputCommentid');
     const date = new Date();
     inputCommentid.innerHTML = '<textarea type="text" id="inputComment" placeholder="Agregar un commentario..." class="inputComment" rows="8" cols="77"></textarea>';
-    addcommentsToDB(user.uid,inputCommentVal,date,user.photoUrl,doc.id,user.name)
-    });
+    addcommentsToDB(user.uid, inputCommentVal, date, user.photoUrl, doc.id, user.name);
+  });
 
   const like = div.querySelector('#like');
   const dislike = div.querySelector('#dis-like');
-  if(doc.data().likes.indexOf(user.uid)>-1){
+  if (doc.data().likes.indexOf(user.uid) > -1) {
     dislike.classList.add('hidden');
-  }else{
+  } else {
     like.classList.add('hidden');
   }
-  like.addEventListener( 'click', () => {
-  like.classList.add('hidden');
-  dislike.classList.remove('hidden');
-  removeLike(doc.id, user.uid);
+  like.addEventListener('click', () => {
+    like.classList.add('hidden');
+    dislike.classList.remove('hidden');
+    removeLike(doc.id, user.uid);
   });
-  dislike.addEventListener( 'click', () => {
-  like.classList.remove('hidden');
-  dislike.classList.add('hidden');
-  addLike(doc.id, user.uid);
-
+  dislike.addEventListener('click', () => {
+    like.classList.remove('hidden');
+    dislike.classList.add('hidden');
+    addLike(doc.id, user.uid);
   });
   // Start grabbing our DOM Element
   const options = div.querySelector('#options');
@@ -109,7 +112,6 @@ const postTemplate = (doc,user) => {
       const selectedOption = e.target.value;
       // console.log(selectedOption);
       if (selectedOption === 'edit') {
-        
         // console.log(doc.data().creatorID);
         textPost.classList.add('hidden');
         textPost.classList.remove('show');
@@ -118,7 +120,7 @@ const postTemplate = (doc,user) => {
 
         accept.addEventListener('click', () => {
           const editTextPostVal = div.querySelector('#edit-text-post').value;
-          
+
           const newDate = new Date();
           editTextPostToDB(doc.id, editTextPostVal, newDate);
         });
@@ -128,95 +130,91 @@ const postTemplate = (doc,user) => {
       }
     });
   }
+  // eslint-disable-next-line no-shadow
   const commentTemplate = (doc) => {
     const newComentsUser = document.createElement('div');
-  
 
-  newComentsUser.classList = 'conter-coments';
-  newComentsUser.innerHTML = `
+    newComentsUser.classList = 'conter-coments';
+    newComentsUser.innerHTML = `
   <div><img class="user-image-comments-app" src="${doc.photoUser}">
   <div class="cloud">
   <h4 class="user-app">${doc.userName}</h4>
   <h4 class="document-app">${doc.comment}</h4>
   <h4class="date-app">${formatDate(doc.date.toDate())}</h4>
   </div>`;
-  return newComentsUser;
-  }
+    return newComentsUser;
+  };
   const readingComment = (comments, idPost) => {
-    
     const container = div.querySelector('#all-comments');
-    
+
     if (container) {
       container.innerHTML = '';
 
       comments.forEach((comment) => {
-        
         if (idPost === comment.postID) {
-          
           const divComment = commentTemplate(comment);
           container.appendChild(divComment);
         }
       });
     }
-  
+
     return container;
-  }
+  };
   readComments(readingComment, doc.id);
-  
+
   return div;
 };
 
-export const profileTemplate = (user,posts) => {
- 
-   const viewProfile=headerTemplate(user);
-  //URL PHOTO COMMENTS
+export const profileTemplate = (user, posts) => {
+  const viewProfile = headerTemplate(user);
+  // URL PHOTO COMMENTS
   const form = viewProfile.querySelector('#photoPost');
   const imgURL = viewProfile.querySelector('#imgURL');
   const exit = viewProfile.querySelector('#exit');
   const newPhoto = viewProfile.querySelector('#add-new-photo');
 
   form.addEventListener('change', (e) => {
-        postImage = e.target.files[0];
-        //console.log(file, "file");
-        //localStorage.setItem('img',file);
-        const objectURL = URL.createObjectURL(postImage)
-        
-        imgURL.innerHTML='<img src="'+objectURL+'" width="100" heigth="150">';
-        exit.classList.remove('hidden');
-        newPhoto.classList.add('hidden');
+    postImage = e.target.files[0];
+    // console.log(file, "file");
+    // localStorage.setItem('img',file);
+    const objectURL = URL.createObjectURL(postImage);
+
+    imgURL.innerHTML = `<img src="${objectURL}" width="100" heigth="150">`;
+    exit.classList.remove('hidden');
+    newPhoto.classList.add('hidden');
   });
 
-  exit.addEventListener('click', ()=> {
-    imgURL.innerHTML='<img src="">'; 
+  exit.addEventListener('click', () => {
+    imgURL.innerHTML = '<img src="">';
     exit.classList.add('hidden');
     newPhoto.classList.remove('hidden');
   });
   // Start grabbing our DOM Element
   const textPost = viewProfile.querySelector('#box-post');
-  
+
   const post = viewProfile.querySelector('#mode-post');
   const btnShare = viewProfile.querySelector('#btn-share');
 
-      posts.forEach((post) => {
-        const messagePost = viewProfile.querySelector('#message-post');
-        messagePost.appendChild(postTemplate(post,user));
-    
-      });
+  // eslint-disable-next-line no-shadow
+  posts.forEach((post) => {
+    const messagePost = viewProfile.querySelector('#message-post');
+    messagePost.appendChild(postTemplate(post, user));
+  });
   // Share post
   btnShare.addEventListener('click', () => {
     const textPostVal = textPost.value;
     const postVal = post.value;
-    
-    const date = new Date();
-    
-    const datePhoto = new Date().toString();
-        
-        if(postImage==null){
-          createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal,user.photoUrl,"");
 
-        }else{
+    const date = new Date();
+
+    const datePhoto = new Date().toString();
+
+    if (postImage == null) {
+      createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, '');
+
+    }else{
           uploadImage(datePhoto, postImage)
-          .then((url) => createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal,user.photoUrl,url));
+          .then((url) => console.log(url) ||  createAddNoteToDB (user.uid, user.name, textPostVal, date, postVal,user.photoUrl,url));
   
         }
 	    	
