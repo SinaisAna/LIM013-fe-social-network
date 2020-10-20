@@ -40,12 +40,12 @@ export const headerTemplate = (user) => {
      </div>
      <div id="profile-user-eddit-new">
      <form>
-     <p>Name:${user.lastname}</p>
-     <p>Apellido:${user.firstname}</p>
-     <p>Email: ${user.email}</p>
-     <p>hobbies:${user.hobbies}</p>
-     <p>Ocupacion:${user.occupation}</p>
-     <p>Fecha de nacimiento:${user.birthday}</p>
+     <p><b>Name:</b>${user.lastname}</p>
+     <p><b>Apellido:</b>${user.firstname}</p>
+     <p><b>Email:</b> ${user.email}</p>
+     <p><b>hobbies:</b>${user.hobbies}</p>
+     <p><b>Ocupacion:</b>${user.occupation}</p>
+     <p><b>Fecha de nacimiento:</b>${user.birthday}</p>
      </form>
      </div>
      <label class="editPost hidden" id="editProfile"><i class="far fa-edit"></i></label>
@@ -81,20 +81,6 @@ export const headerTemplate = (user) => {
   home.addEventListener('click', () => {
     window.location.hash = '#/home';
   });
-  /*
-  // new-collection-users
-  const informationUser = (user) => {
-    const newInformations = document.createElement('div');
-    newInformations.classList = 'from-user';
-    newInformations.innerHTML = `
-    <h4 class="infor-birthday">${user.birthday}<h4>
-    <h4 class="infor-occupation"><h4>
-    <h4 class="infor-hobbies"><h4>`;
-    return newInformations;
-  };
-  const container = viewProfile.querySelector('#all-new-user-infor');
-  const divComment = informationUser();
-  container.appendChild(divComment);
-*/
+
   return viewProfile;
 };

@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/named
+import { refres } from '../firebase/auth.js';
 import { readUserDB, readAddNotesToDB, readAddNotesToDBP } from '../firebase/firestore.js';
 import { components } from '../views/components.js';
 
@@ -5,6 +7,7 @@ import { components } from '../views/components.js';
 const changeTemplate = (hash) => {
   const container = document.getElementById('container');
   container.innerHTML = '';
+  // eslint-disable-next-line no-console
   console.log(hash);
   switch (hash) {
     case '':

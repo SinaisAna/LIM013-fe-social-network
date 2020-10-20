@@ -27,3 +27,5 @@ export const loginUser = (email, password) => firebase.auth()
   .signInWithEmailAndPassword(email, password);
 
 export const currentUser = () => firebase.auth().currentUser;
+
+export const refres = () => firebase.auth().onAuthStateChanged;

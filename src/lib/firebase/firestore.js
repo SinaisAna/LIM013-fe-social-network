@@ -1,4 +1,5 @@
-export const createUserDB = (useruid, emailUser, userPhotoUrl, username, lastname, firstname) => firebase.firestore()
+// eslint-disable-next-line max-len
+export const createUserDB = (useruid, emailUser, userPhotoUrl, username, userLastname, userFirstname) => firebase.firestore()
   .collection('users').add({
     name: username,
     email: emailUser,
@@ -7,27 +8,27 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username, lastnam
     birthday: '',
     occupation: '',
     hobbies: '',
-    lastname: lastname,
-    firstname: firstname,
+    lastname: userLastname,
+    firstname: userFirstname,
 
   });
 
 // ADD INF
-export const userInformation = (iduser,birthdayVal, occupationVal, hobbiesVal, firstname, lastname) => firebase.firestore().collection('users')
-  .doc(iduser).update({ birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: firstname, lastname: lastname });
+export const userInformation = (iduser, birthdayVal, occupationVal, hobbiesVal, userFirstname, userLastname) => firebase.firestore().collection('users')
+  .doc(iduser).update({
+    // eslint-disable-next-line max-len
+    birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: userFirstname, lastname: userLastname,
+  });
 
-/*
-  export const getUserInformation = (callback) =>
-  firebase.firestore().collection('users')
-    .onSnapshot((querySnapshot) => {
-      const data = [];
-      querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() })
-      });
-      callback(data);
+export const getUserInformation = (callback) => firebase.firestore().collection('users')
+  .onSnapshot((querySnapshot) => {
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      data.push({ id: doc.id, ...doc.data() });
     });
+    callback(data);
+  });
 
-*/
 export const readUserDB = (uid) => firebase.firestore().collection('users')
   .where('uid', '==', uid)
   .get();

@@ -7,10 +7,9 @@ const readCreateUserDB = (useruid, emailUser, userPhotoUrl, username) => {
       console.log('res', res);
       if (res.empty) {
         createUserDB(useruid, emailUser, userPhotoUrl, username);
-
       } else {
-        res.forEach((refDoc) => {
-          /*const user = refDoc.data();
+        res.forEach(() => {
+          /* const user = refDoc.data();
           // console.log(user);
           localStorage.setItem('userName', user.name);
           localStorage.setItem('userEmail', user.email);
@@ -28,6 +27,7 @@ export const loginWithEmailAndPassword = (txtEmailVal, txtpasswordVal) => {
       readUserDB(res.user.uid)
         .then((querySnapshot) => {
           querySnapshot.forEach((refDoc) => {
+            // eslint-disable-next-line no-unused-vars
             const user = refDoc.data();
             // Open home template
             window.location.hash = '#/home';

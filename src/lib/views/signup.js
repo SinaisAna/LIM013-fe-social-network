@@ -3,7 +3,7 @@ import { createUser } from '../firebase-controller/signup-controller.js';
 
 export default () => {
   const viewSignUp = document.createElement('section');
-  viewSignUp.classList ='registerPhoto';
+  viewSignUp.classList = 'registerPhoto';
   viewSignUp.innerHTML = `
     <form id="signup-form">
     <img src="img/cuy.png" class="cuyo">

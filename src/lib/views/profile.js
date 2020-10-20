@@ -191,16 +191,16 @@ export const profileTemplate = (user, posts, userid) => {
     const birthday = birthdayVal.value;
     const occupation = occupationVal.value;
     const hobbies = hobbiesVal.value;
-    const lastname = lastnameVal.value;
-    const firstname = firstnameVal.value;
+    const userLastname = lastnameVal.value;
+    const userFirstname = firstnameVal.value;
     loadProfile.classList.add('hidden');
     editProfile.classList.remove('hidden');
     profileEdditNew.classList.remove('hidden');
     profileUser.classList.add('hidden');
 
     // eslint-disable-next-line no-undef
-    console.log(userid, birthday, occupation, hobbies, firstname, lastname);
-    userInformation(userid, birthday, occupation, hobbies, firstname, lastname);
+    console.log(userid, birthday, occupation, hobbies, userFirstname, userLastname);
+    userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname);
   });
 
   // URL PHOTO COMMENTS
