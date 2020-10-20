@@ -1,10 +1,11 @@
 import { readUserDB, readAddNotesToDB, readAddNotesToDBP } from '../firebase/firestore.js';
 import { components } from '../views/components.js';
 
+// eslint-disable-next-line consistent-return
 const changeTemplate = (hash) => {
   const container = document.getElementById('container');
   container.innerHTML = '';
-console.log(hash);
+  console.log(hash);
   switch (hash) {
     case '':
     case '#':

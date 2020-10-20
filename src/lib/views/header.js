@@ -5,8 +5,8 @@ export const headerTemplate = (user) => {
   viewProfile.innerHTML = ` 
     <header>
     <nav>
-    <div class="title-energy">
-    <h4 class="title">Energía Verde💡</h4></div>
+    <div class="title-dota">
+    <h4 class="title">Comunidad Dota</h4><img src="img/pegn.png" width="50px" heigth="50px" class="icon-prin"></div>
     <input type="checkbox" id="check-and-uncheck">
     <label for="check-and-uncheck">
     <i class="fas fa-bars" id="hamburger"></i>
@@ -26,12 +26,12 @@ export const headerTemplate = (user) => {
     </nav>
     </header>
     <section class="container-profile">
-    <div><img src="../img/escritorios.png" class="init"</div>
+    <div><img src="../img/tusk.jpeg" class="init"></div>
     <img class="user-image" src="${user.photoUrl}">
     <div><p id="edit-user-name">${user.name}</p></div>
     <h3>Email</h3>
      <p>${user.email}</p>
-     <label class="editPost" id="editProfile"><i class="far fa-edit"></i></label>
+     <label class="editPost hidden" id="editProfile"><i class="far fa-edit"></i></label>
      <label class="editPost hidden" id="loadProfile"><i>💾</i></label>
      <div id="edit-profile-user" class="hidden">
      <form>
@@ -97,7 +97,7 @@ export const headerTemplate = (user) => {
     // eslint-disable-next-line no-undef
     userInformation(birthday, occupation, hobbies);
   });
-/*
+  /*
   // new-collection-users
   const informationUser = (user) => {
     const newInformations = document.createElement('div');

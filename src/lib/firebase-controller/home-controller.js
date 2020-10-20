@@ -1,5 +1,6 @@
 import { logOut } from '../firebase/auth.js';
-import { addNotesToDB, editTextPost, readAddNotesToDB, deletePost, readUserDB
+import {
+  addNotesToDB, editTextPost, readAddNotesToDB, deletePost, readUserDB,
 } from '../firebase/firestore.js';
 
 export const homeLogOut = () => {
@@ -10,15 +11,15 @@ export const homeLogOut = () => {
       localStorage.removeItem('userEmail');
       localStorage.removeItem('userPhoto');
       */
-      //window.location.hash = '#/login';
-      
+      // window.location.hash = '#/login';
+
     });
 };
 
-export const createAddNoteToDB = (userID, name, createNote, datePost, userMode, photoUser,image) => {
-  addNotesToDB(userID, name, createNote, datePost, userMode, photoUser,image)
+// eslint-disable-next-line max-len
+export const createAddNoteToDB = (userID, name, createNote, datePost, userMode, photoUser, image) => {
+  addNotesToDB(userID, name, createNote, datePost, userMode, photoUser, image)
     .then((docRef) => {
-
       console.log('Document written with ID: ', docRef.id);
     })
     .catch((error) => {
@@ -43,11 +44,10 @@ export const readUser = (uid) => {
     .then((querySnapshot) => {
       querySnapshot.forEach((refDoc) => {
         const user = refDoc.data();
-        console.log("userconroller",user);
+        console.log('userconroller', user);
         return user;
-       
       });
-  });
+    });
 };
 export const editTextPostToDB = (docID, changeNote, newDate) => {
   editTextPost(docID, changeNote, newDate)
@@ -64,4 +64,3 @@ export const deletePostToDB = (docID) => {
       console.error('Error removing document:', error);
     });
 };
-

@@ -1,12 +1,9 @@
 @media screen and (max-width: 900px){
-    .light-bulb{
-        display: none;
+    .icon-prin{
+        left: calc(68% - 60px);
     }
     .light-bulb-mobile{
         display: block;
-    }
-    .login-style{
-        margin-left: 0px;
     }
     body{
         background: white;
@@ -82,4 +79,68 @@
     .inputComment{
         width: 55%;
     }
+}
+
+@media (max-width: 768px){
+    .login-style{
+        background: #FFFFFF;
+        box-shadow: none;
+        margin: 0;
+        max-width: none;
+        justify-content: space-evenly;
+    }
+    .light-bulb{
+        display: none;
+    }
+    #signup-form{
+        background: #FFFFFF;
+        box-shadow: none;
+        margin: 0;
+        max-width: none;
+        justify-content: space-evenly;
+        width: 100%;
+        padding: 10%;
+    }
+    .signup-form{
+        padding: 8px;
+    }
+    .registerPhoto{
+        background: none;
+    }
+    .cuyo{
+        display: block;
+        width: 100px;
+        height: 100px;
+        margin-left: 35%;
+        margin-top: 5%;
+    }
+    .mirana{
+        display: block;
+        width: 170px;
+        height: 200px;
+        margin-top: 5%;
+        margin-left: 20%;
+    }
+    .cuye{
+        display: none;
+    }
+    #login-form{
+        margin-left: 8%;
+        margin-right: 8%;
+    }
+    .registerUser{
+        font-size: 13px;
+        padding-top: 10%;
+    }
+    .alternative{
+        font-size: 13px;
+
+    }
+    .submit-form{
+        padding: 7px;
+    }
+    #btn-logout{
+        padding: 5px;
+    }
+
 }

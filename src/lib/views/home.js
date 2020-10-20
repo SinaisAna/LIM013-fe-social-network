@@ -211,13 +211,11 @@ export const profileTemplate = (user, posts) => {
 
     if (postImage == null) {
       createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, '');
-
-    }else{
-          uploadImage(datePhoto, postImage)
-          .then((url) => console.log(url) ||  createAddNoteToDB (user.uid, user.name, textPostVal, date, postVal,user.photoUrl,url));
-  
-        }
-	    	
+    } else {
+      uploadImage(datePhoto, postImage)
+        // eslint-disable-next-line max-len
+        .then((url) => console.log(url) || createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, url));
+    }
   });
 
   const btnlogOut = viewProfile.querySelector('#btn-log-out');

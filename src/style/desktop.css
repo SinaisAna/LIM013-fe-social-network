@@ -5,17 +5,25 @@
     bottom: 0;
     z-index: -1;
 }
-
-.bulb-container{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 7em;
-    padding: 0 2rem;
+.welcome{
+    padding: 10%;
+}
+.registerUser{
+    margin-top: 5%;
+    text-align: center;
+}
+.fonts{
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .login-style{
-    margin-left: 400px;
+    margin-left: 65%;
     margin-top: 20px;
+    background: #FFFFFF;
+    box-shadow: 0.13vw 0.25vw 0.25vw rgba(0, 0, 0, 0.25), -1px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    margin-right: 5%;
+    padding: 1%;
 }
 
 body{
@@ -27,7 +35,8 @@ body{
     margin-left: 2%;
 }
 nav{
-    background:linear-gradient(30deg, #ADFF2F,#7FFF00, #7CFC00, #00FF00, #32CD32);
+    background:linear-gradient(30deg, #9660A8,#4A8FB6, #fff, #CC91C3, #9660A8);
+    box-shadow: 0.13vw 0.25vw 0.25vw rgba(0, 0, 0, 0.25), -1px 0px 4px rgba(0, 0, 0, 0.25);
     height: 80px;
     text-align: center;
 }
@@ -127,7 +136,7 @@ label #cross{
 }
 
 i{
-    color: #006400;
+    color: #4516A9;
     font-size: 30px;
     margin-right: 10px;
     cursor: pointer;
@@ -139,11 +148,11 @@ i{
     display: none;
 }
 .space{
-    background: linear-gradient(30deg, #ADFF2F,#7FFF00, #7CFC00, #00FF00, #32CD32);
+    background: linear-gradient(30deg, #9660A8,#4A8FB6, #fff, #CC91C3, #9660A8);
     color: black;
     padding: 4px;
     width: 90px;
-    border-radius: 50px;
+    border-radius: 5px;
     font-size: 13px;
     box-shadow: 0 5px 25px rgba(0,0,0,.5);
 
@@ -197,15 +206,17 @@ i{
     font-size: 30px;
     padding: 10px;
     position: absolute;
-    left: calc(50% - 60px);
+    left: calc(40% - 60px);
     top: 6px;
+    font-family: 'Courier New', Courier, monospace;
 }
-.title-energy{
+.title-dota{
     width: 40%;
     height: 0%;
+
 }
 .container-user{
-    background: linear-gradient(30deg, #ADFF2F,#7FFF00, #7CFC00, #00FF00, #32CD32);
+    background: linear-gradient(30deg, #9660A8,#4A8FB6, #fff, #CC91C3, #9660A8);
     border-radius: 20px;
 }
 .show{
@@ -244,8 +255,8 @@ i{
 }
 .registerPhoto{
     width: 100%;
-    background: url('../img/register.png') no-repeat;
-    background-size: cover;
+    background: url('../img/Lina.gif') no-repeat;
+
 }
 .coment-conter{
     width: 100%;
@@ -295,4 +306,20 @@ i{
 .document-app{
     font-size: 18px;
     font-weight: normal;
+}
+.container-login{
+    margin-top: 10px;
+}
+.cuyo{
+    display: none;
+}
+.mirana{
+    display: none;
+}
+.icon-prin{
+    font-size: 30px;
+    padding: 10px;
+    position: absolute;
+    left: calc(65% - 60px);
+    top: 6px;
 }

@@ -5,8 +5,9 @@ export default () => {
   const viewSignUp = document.createElement('section');
   viewSignUp.classList ='registerPhoto';
   viewSignUp.innerHTML = `
-    <h1>Regístrate</h1>
     <form id="signup-form">
+    <img src="img/cuy.png" class="cuyo">
+    <h1 class="register">Regístrate</h1>
       <input type="text" id="signup-name" class="signup-form" placeholder="Nombre" >
       <input type="text" id="signup-last-name" class="signup-form" placeholder="Apellidos" >
       <input type="email" id="signup-email" class="signup-form" placeholder="Email" required>
