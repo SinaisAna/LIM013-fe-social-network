@@ -25,7 +25,8 @@ export default () => {
   const signUpForm = viewSignUp.querySelector('#signup-form');
   const sigOut = viewSignUp.querySelector('#btn-logout');
   const userName = viewSignUp.querySelector('#signup-user-name');
-
+  const lastName = viewSignUp.querySelector('#signup-last-name');
+  const name = viewSignUp.querySelector('#signup-name');
   // Event submit to create a user account
   signUpForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -33,8 +34,10 @@ export default () => {
     const signUpEmailVal = signUpEmail.value;
     const signupConfirmPasswordVal = signupConfirmPassword.value;
     const userNameVal = userName.value;
+    const lastNameVal = lastName.value;
+    const nameVal = name.value;
 
-    createUser(signUpEmailVal, signupConfirmPasswordVal, userNameVal);
+    createUser(signUpEmailVal, signupConfirmPasswordVal, userNameVal, lastNameVal, nameVal);
 
     // Clear the form
     signUpForm.reset();

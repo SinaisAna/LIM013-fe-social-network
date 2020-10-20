@@ -3,11 +3,11 @@ import { createUserAccount } from '../firebase/auth.js';
 
 const imgProfileUserDefault = '../img/userProfile.png';
 
-export const createUser = (email, password, name) => {
+export const createUser = (email, password, name, lastname, firstname) => {
   createUserAccount(email, password)
     .then((res) => {
       window.location.hash = '#/home';
-      createUserDB(res.user.uid, email, imgProfileUserDefault, name);
+      createUserDB(res.user.uid, email, imgProfileUserDefault, name, lastname, firstname);
     })
     .catch((error) => {
       const errorCode = error.code;

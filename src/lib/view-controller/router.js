@@ -28,14 +28,15 @@ const changeTemplate = (hash) => {
                     // eslint-disable-next-line no-shadow
                     const user = refDoc.data();
                     container.innerHTML = '';
-                    return container.appendChild(components.profileTemplateProp(user, posts));
+                    return container.appendChild(components.homeTemplateProp(user, posts));
                   });
                 } else {
                   readAddNotesToDBP((posts) => {
                     // eslint-disable-next-line no-shadow
                     const user = refDoc.data();
                     container.innerHTML = '';
-                    return container.appendChild(components.profileTemplateProp(user, posts));
+                    // eslint-disable-next-line max-len
+                    return container.appendChild(components.profileTemplateProp(user, posts, refDoc.id));
                   }, user.uid);
                 }
               });

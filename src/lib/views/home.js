@@ -165,7 +165,7 @@ const postTemplate = (doc, user) => {
   return div;
 };
 
-export const profileTemplate = (user, posts) => {
+export const homeTemplate = (user, posts) => {
   const viewProfile = headerTemplate(user);
   // URL PHOTO COMMENTS
   const form = viewProfile.querySelector('#photoPost');

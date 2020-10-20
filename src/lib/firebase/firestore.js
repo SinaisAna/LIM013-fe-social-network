@@ -1,18 +1,20 @@
-export const createUserDB = (useruid, emailUser, userPhotoUrl, username) => firebase.firestore()
+export const createUserDB = (useruid, emailUser, userPhotoUrl, username, lastname, firstname) => firebase.firestore()
   .collection('users').add({
     name: username,
     email: emailUser,
     uid: useruid,
     photoUrl: userPhotoUrl,
-    birthday: birthdayVal,
-    occupation: occupationVal,
-    hobbies: hobbiesVal,
+    birthday: '',
+    occupation: '',
+    hobbies: '',
+    lastname: lastname,
+    firstname: firstname,
 
   });
 
 // ADD INF
-export const userInformation = (birthdayVal, occupationVal, hobbiesVal) => firebase.firestore().collection('users')
-  .doc().update({ birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal });
+export const userInformation = (iduser,birthdayVal, occupationVal, hobbiesVal, firstname, lastname) => firebase.firestore().collection('users')
+  .doc(iduser).update({ birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: firstname, lastname: lastname });
 
 /*
   export const getUserInformation = (callback) =>

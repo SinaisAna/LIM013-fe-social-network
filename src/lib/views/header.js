@@ -1,5 +1,3 @@
-import { userInformation } from '../firebase/firestore.js';
-
 export const headerTemplate = (user) => {
   const viewProfile = document.createElement('section');
   viewProfile.innerHTML = ` 
@@ -29,18 +27,29 @@ export const headerTemplate = (user) => {
     <div><img src="../img/tusk.jpeg" class="init"></div>
     <img class="user-image" src="${user.photoUrl}">
     <div><p id="edit-user-name">${user.name}</p></div>
-    <h3>Email</h3>
-     <p>${user.email}</p>
-     <label class="editPost hidden" id="editProfile"><i class="far fa-edit"></i></label>
-     <label class="editPost hidden" id="loadProfile"><i>💾</i></label>
-     <div id="edit-profile-user" class="hidden">
+    <div id="edit-profile-user" class="hidden">
      <form>
-     <input type="text" id="add-birthday" class="add-inf" placeholder="fecha de cuplea#os">
-     <input type="text" id="occupation-work" class="add-inf" placeholder="ocupacion">
-     <input type="text" id="hobbies" class="add-inf" placeholder="hobbies">
+     <input type="text" id="lastname" class="add-inf" placeholder="${user.lastname}">
+     <input type="text" id="firstname" class="add-inf" placeholder="${user.firstname}">
+     <input type="text" id="email" class="add-inf" placeholder="${user.email}">
+     <input type="text" id="hobbies" class="add-inf" placeholder="${user.hobbies}">
+     <input type="text" id="occupation-work" class="add-inf" placeholder="${user.occupation}">
+     <input type="text" id="add-birthday" class="add-inf" placeholder="${user.birthday}">
      </form>
      <div id="new-user-infor"></div>
      </div>
+     <div id="profile-user-eddit-new">
+     <form>
+     <p>Name:${user.lastname}</p>
+     <p>Apellido:${user.firstname}</p>
+     <p>Email: ${user.email}</p>
+     <p>hobbies:${user.hobbies}</p>
+     <p>Ocupacion:${user.occupation}</p>
+     <p>Fecha de nacimiento:${user.birthday}</p>
+     </form>
+     </div>
+     <label class="editPost hidden" id="editProfile"><i class="far fa-edit"></i></label>
+     <label class="editPost hidden" id="loadProfile"><i>💾</i></label>
     </section>
     </section>
     <div id="post-container" class="post general-position">
@@ -64,38 +73,13 @@ export const headerTemplate = (user) => {
     <div id="message-post"> 
     </div>
     `;
-  const loadProfile = viewProfile.querySelector('#loadProfile');
-  const birthdayVal = viewProfile.querySelector('#add-birthday');
-  const occupationVal = viewProfile.querySelector('#occupation-work');
-  const hobbiesVal = viewProfile.querySelector('#hobbies');
-  const profileUser = viewProfile.querySelector('#edit-profile-user');
-
-  const editProfile = viewProfile.querySelector('#editProfile');
   const profile = viewProfile.querySelector('#btn-profile');
   profile.addEventListener('click', () => {
     window.location.hash = '#/profile';
   });
-  editProfile.addEventListener('click', () => {
-    profileUser.classList.remove('hidden');
-    loadProfile.classList.remove('hidden');
-    editProfile.classList.add('hidden');
-  });
-
   const home = viewProfile.querySelector('#btn-home');
   home.addEventListener('click', () => {
-    editProfile.classList.add('hidden');
     window.location.hash = '#/home';
-  });
-
-  loadProfile.addEventListener('click', () => {
-    const birthday = birthdayVal.value;
-    const occupation = occupationVal.value;
-    const hobbies = hobbiesVal.value;
-    loadProfile.classList.add('hidden');
-    editProfile.classList.remove('hidden');
-
-    // eslint-disable-next-line no-undef
-    userInformation(birthday, occupation, hobbies);
   });
   /*
   // new-collection-users
