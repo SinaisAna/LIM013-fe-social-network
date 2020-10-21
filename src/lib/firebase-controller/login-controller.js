@@ -9,12 +9,6 @@ const readCreateUserDB = (useruid, emailUser, userPhotoUrl, username) => {
         createUserDB(useruid, emailUser, userPhotoUrl, username);
       } else {
         res.forEach(() => {
-          /* const user = refDoc.data();
-          // console.log(user);
-          localStorage.setItem('userName', user.name);
-          localStorage.setItem('userEmail', user.email);
-          localStorage.setItem('userPhoto', user.photoUrl);
-          */
         });
       }
     });
@@ -31,12 +25,6 @@ export const loginWithEmailAndPassword = (txtEmailVal, txtpasswordVal) => {
             const user = refDoc.data();
             // Open home template
             window.location.hash = '#/home';
-            /*
-            localStorage.setItem('userID', res.user.uid);
-            localStorage.setItem('userName', user.name);
-            localStorage.setItem('userEmail', user.email);
-            localStorage.setItem('userPhoto', user.photoUrl);
-            */
           });
         });
     })

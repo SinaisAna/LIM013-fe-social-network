@@ -5,7 +5,9 @@ import {
   // eslint-disable-next-line import/named
   getUserInformation,
   readUserDB,
-  addLike,
+  // addLike,
+  // editTextPost,
+  // readAddNotesToDB,
 } from '../src/lib/firebase/firestore';
 
 const fixtureData = {
@@ -25,7 +27,7 @@ const fixtureData = {
       },
     },
     _Coleccion_: {
-      posts: {
+      pruebas: {
         __doc__: {
           GJR4GH4f: {
             content: 'este es un post',
@@ -40,6 +42,22 @@ const fixtureData = {
       },
     },
   },
+  __collections__: {
+    pruebas: {
+      __doc__: {
+        abc1d: {
+          note: 'Hello World',
+          date: '',
+        },
+
+        abc2d: {
+          note: 'Good morning',
+          date: '',
+        },
+
+      },
+    },
+  },
 };
 
 global.firebase = new MockFirebase(fixtureData, {
@@ -47,7 +65,7 @@ global.firebase = new MockFirebase(fixtureData, {
 });
 
 describe('lista de usuarios', () => {
-  it('Debería porder agregar un usuario', (done) => createUserDB('123', 'example@gmail.com', 'testimail.png', 'ana')
+  it('Debería porder agregar un usuario', (done) => createUserDB('123', 'example24@gmail.com', 'testimail.png', 'ana')
     .then(() => getUserInformation(
       (data) => {
         const result = data.find((users) => users.name === 'ana');
@@ -73,11 +91,14 @@ describe('readUserDB', () => {
       },
     )));
 });
+/*
 describe('addLike', () => {
   it('debería ser una función', () => {
     expect(typeof addLike).toBe('function');
   });
-  it('Debería poder dar like con mi usuario logueado', (done) => addLike('9URN4KSD9kw9HKNlo47B', 'pE6kjzWNn2ULhM3NWsljAP7BV662')
+  // eslint-disable-next-line max-len
+  it('Debería poder dar like con mi usuario logueado', (done) => addLike('9URN4KSD9kw9HKNlo47B',
+  'pE6kjzWNn2ULhM3NWsljAP7BV662')
     .then((data) => {
       // eslint-disable-next-line no-undef
       readComments(data.doc.idPost,
@@ -88,3 +109,28 @@ describe('addLike', () => {
         });
     }));
 });
+
+describe('Edit a post', () => {
+  it('Should be able to edit a post', (done) => editTextPost('GJR4GH4f', 'este es un post', '')
+  // eslint-disable-next-line no-undef
+    .then(() => readAddNotesToDB(
+      (data) => {
+        const result = data.find((pruebas) => pruebas.content === 'este es un post');
+        expect(result.content).toBe('este es un post');
+        done();
+      },
+    )));
+});
+
+describe('Delete a post', () => {
+  // eslint-disable-next-line no-undef
+  it('Should be able to delete a post', (done) => deletePost('GJR4GH4f')
+    .then(() => readAddNotesToDB(
+      (data) => {
+        const result = data.find((pruebas) => pruebas.id === 'GJR4GH4f');
+        expect(result).toBe(undefined);
+        done();
+      },
+    )));
+});
+*/

@@ -14,11 +14,12 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username, userLas
   });
 
 // ADD INF
-export const userInformation = (iduser, birthdayVal, occupationVal, hobbiesVal, userFirstname, userLastname) => firebase.firestore().collection('users')
+export const userInformation = (iduser, birthdayVal, occupationVal, hobbiesVal, userFirstname, userLastname, photoUrl) => firebase.firestore().collection('users')
   .doc(iduser).update({
     // eslint-disable-next-line max-len
-    birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: userFirstname, lastname: userLastname,
+    birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: userFirstname, lastname: userLastname, photoUrl: photoUrl,
   });
+  
 
 export const getUserInformation = (callback) => firebase.firestore().collection('users')
   .onSnapshot((querySnapshot) => {
@@ -39,7 +40,7 @@ export const addNotesToDB = (userID, name, createNote, datePost, userMode, photo
   .collection('pruebas').add({
     creatorID: userID,
     creatorName: name,
-    note: createNote,
+    note: createNote.trim(),
     date: datePost,
     mode: userMode,
     photo: photoUser,
@@ -98,7 +99,7 @@ export const addcommentsToDB = (userID, comment, datePost, photoUser, postID, na
 
     creatorID: userID,
     photoUsers: photoUser,
-    comments: comment,
+    comments: comment.trim(),
     date: datePost,
     postsID: postID,
     userName: name,

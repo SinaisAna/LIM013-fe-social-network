@@ -155,7 +155,6 @@ p {
   font-size: 100%;
   margin-top: 2%;
   margin-left: 4%;
-  font-family: emoji;
 }
 #btn-logout{
   background: linear-gradient(30deg, #E90404,#CE0000, #F16906, #F16906, #EBFF02);

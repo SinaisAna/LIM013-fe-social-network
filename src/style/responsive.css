@@ -1,6 +1,6 @@
 @media screen and (max-width: 900px){
     .icon-prin{
-        left: calc(68% - 60px);
+        display: none;
     }
     .light-bulb-mobile{
         display: block;
@@ -45,6 +45,8 @@
     .title{
         position: absolute;
         left: calc(50% - 130px);
+        font-size: 22px;
+        top: 19px;
     }
     .post{
         margin: auto;

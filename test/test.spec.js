@@ -19,9 +19,9 @@ describe('createUserAccount', () => {
   it('should be a function', () => {
     expect(typeof myModule.createUserAccount).toBe('function');
   });
-  it('should be able to create an account', (done) => myModule.createUserAccount('sheillyrlp@gmial.com', '12345678')
+  it('should be able to create an account', (done) => myModule.createUserAccount('anaguanda20@gmail.com', '12345678')
     .then((user) => {
-      expect(user.email).toBe('sheillyrlp@gmial.com');
+      expect(user.email).toBe('anaguanda20@gmail.com');
       done();
     }));
 });
@@ -30,9 +30,9 @@ describe('createUserAccount', () => {
 describe('loginUser', () => {
   it('should be a function', () => expect(typeof myModule.loginUser).toBe('function'));
   it('should be able to login', (done) => {
-    myModule.loginUser('sheillyrlp@gmial.com', '12345678')
+    myModule.loginUser('anaguanda20@gmail.com', '12345678')
       .then((user) => {
-        expect(user.email).toBe('sheillyrlp@gmial.com');
+        expect(user.email).toBe('anaguanda20@gmail.com');
         done();
       });
   });

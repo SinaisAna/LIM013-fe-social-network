@@ -7,6 +7,7 @@ import {
 import { headerTemplate } from './header.js';
 
 let postImage;
+let newImageUser;
 const formatDate = (fecha) => {
   const fechaFin = `${fecha.getDate()} - ${fecha.getMonth() + 1} - ${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`;
   return fechaFin;
@@ -167,7 +168,7 @@ const postTemplate = (doc, user) => {
 
 export const profileTemplate = (user, posts, userid) => {
   const viewProfile = headerTemplate(user);
-  // EDDIT USER
+  // EDDIT USER INFORMARMATION
   const editProfile = viewProfile.querySelector('#editProfile');
   editProfile.classList.remove('hidden');
 
@@ -179,12 +180,18 @@ export const profileTemplate = (user, posts, userid) => {
   const firstnameVal = viewProfile.querySelector('#firstname');
   const profileUser = viewProfile.querySelector('#edit-profile-user');
   const profileEdditNew = viewProfile.querySelector('#profile-user-eddit-new');
+  const newPhotoUser = viewProfile.querySelector('#new-photo-user-profile');
 
   editProfile.addEventListener('click', () => {
     profileUser.classList.remove('hidden');
     loadProfile.classList.remove('hidden');
     editProfile.classList.add('hidden');
     profileEdditNew.classList.add('hidden');
+    window.location.hash = '#/edit';
+  });
+
+  newPhotoUser.addEventListener('change', (e) => {
+    newImageUser = e.target.files[0];
   });
 
   loadProfile.addEventListener('click', () => {
@@ -198,9 +205,18 @@ export const profileTemplate = (user, posts, userid) => {
     profileEdditNew.classList.remove('hidden');
     profileUser.classList.add('hidden');
 
-    // eslint-disable-next-line no-undef
-    console.log(userid, birthday, occupation, hobbies, userFirstname, userLastname);
-    userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname);
+    const datePhotoNew = new Date().toString();
+    if (newImageUser == null) {
+      // eslint-disable-next-line max-len
+      userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, user.photoUrl)
+        .then(() => window.location.hash = '#/profile');
+    } else {
+      console.log(userid, birthday, occupation, hobbies, userFirstname, userLastname);
+      uploadImage(datePhotoNew, newImageUser)
+      // eslint-disable-next-line max-len
+        .then((url) => userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, url)
+          .then(() => window.location.hash = '#/profile'));
+    }
   });
 
   // URL PHOTO COMMENTS
@@ -260,33 +276,3 @@ export const profileTemplate = (user, posts, userid) => {
   });
   return viewProfile;
 };
-
-/*
-export const profileEditTemplante = () => {
-    const viewProfileEdit = document.createElement('section');
-    viewProfileEdit.innerHTML = `
-    <label class="editPost" id="editProfile"><i class="far fa-edit"></i></label>
-    <label class="editPost hidden" id="loadProfile"><i>💾</i></label>
-    <div id="edit-profile-user" class="hidden">
-    <form>
-    <input type="text" id="add-birthday" class="add-inf" placeholder="fecha de cuplea#os">
-    <input type="text" id="occupation-work" class="add-inf" placeholder="ocupacion">
-    <input type="text" id="hobbies" class="add-inf" placeholder="hobbies">
-    </form>`
-
-    return viewProfileEdit;
-};
-
-const informationUser = (user) => {
-    const newInformations = document.createElement('div');
-    newInformations.classList = 'from-user';
-    newInformations.innerHTML = `
-    <h4 class="infor-birthday">${user.birthday}<h4>
-    <h4 class="infor-occupation"><h4>
-    <h4 class="infor-hobbies"><h4>`;
-    return newInformations;
-  };
-  const container = viewProfile.querySelector('#all-new-user-infor');
-  const divComment = informationUser();
-  container.appendChild(divComment);
-  */

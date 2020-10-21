@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/named
-import { refres } from '../firebase/auth.js';
+import { auth } from '../firebase/auth.js';
 import { readUserDB, readAddNotesToDB, readAddNotesToDBP } from '../firebase/firestore.js';
 import { components } from '../views/components.js';
 
@@ -19,9 +19,10 @@ const changeTemplate = (hash) => {
     case '#/signup':
     { return container.appendChild(components.signUpTemplateProp()); }
     case '#/profile':
+    case '#/edit':
     case '#/home':
     {
-      firebase.auth().onAuthStateChanged((user) => {
+      auth().onAuthStateChanged((user) => {
         if (user) {
           readUserDB(user.uid)
             .then((querySnapshot) => {

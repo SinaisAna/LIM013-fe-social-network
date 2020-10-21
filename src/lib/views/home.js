@@ -136,10 +136,10 @@ const postTemplate = (doc, user) => {
 
     newComentsUser.classList = 'conter-coments';
     newComentsUser.innerHTML = `
-  <div><img class="user-image-comments-app" src="${doc.photoUser}">
+  <div><img class="user-image-comments-app" src="${doc.photoUsers}">
   <div class="cloud">
   <h4 class="user-app">${doc.userName}</h4>
-  <h4 class="document-app">${doc.comment}</h4>
+  <h4 class="document-app">${doc.comments}</h4>
   <h4class="date-app">${formatDate(doc.date.toDate())}</h4>
   </div>`;
     return newComentsUser;
@@ -149,9 +149,9 @@ const postTemplate = (doc, user) => {
 
     if (container) {
       container.innerHTML = '';
-
+      console.log(comments, 'comen');
       comments.forEach((comment) => {
-        if (idPost === comment.postID) {
+        if (idPost === comment.postsID) {
           const divComment = commentTemplate(comment);
           container.appendChild(divComment);
         }

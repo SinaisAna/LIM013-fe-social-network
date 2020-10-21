@@ -12,7 +12,6 @@ export const homeLogOut = () => {
       localStorage.removeItem('userPhoto');
       */
       // window.location.hash = '#/login';
-
     });
 };
 

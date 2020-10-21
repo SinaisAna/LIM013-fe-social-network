@@ -29,6 +29,8 @@ export const headerTemplate = (user) => {
     <div><p id="edit-user-name">${user.name}</p></div>
     <div id="edit-profile-user" class="hidden">
      <form>
+     <i id="btn-photo-new-user" class="fas fa-pencil-alt"></i>
+     <input type="file" id="new-photo-user-profile" class="new-photo-user-profile">
      <input type="text" id="lastname" class="add-inf" placeholder="${user.lastname}">
      <input type="text" id="firstname" class="add-inf" placeholder="${user.firstname}">
      <input type="text" id="email" class="add-inf" placeholder="${user.email}">
