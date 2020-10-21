@@ -1,5 +1,7 @@
 # Creando una Red Social
-
+  <p align="center">
+  <img src="src/img/cuy.png">
+</p>
 ## Índice
 
 * [1. Preámbulo](#1-preámbulo)
