@@ -52,6 +52,23 @@ export const headerTemplate = (user) => {
      </div>
      <label class="editPost hidden" id="editProfile"><i class="far fa-edit"></i></label>
      <label class="editPost hidden" id="loadProfile"><i>💾</i></label>
+    <section id="infromation-wed">
+      <div class="container-all">
+      <input type="radio" id="1" name="image-slide" hidden/>
+      <input type="radio" id="2" name="image-slide" hidden/>
+      <input type="radio" id="3" name="image-slide" hidden/>
+        <div class="slide">
+        <div class="item-slide">
+        <img class="img-conten" src="../img-slice/antaurus.jpg">
+        </div>
+        <div class="item-slide">
+        <img class="img-conten" src="../img-slice/auron.jpg">
+        </div>
+        <div class="item-slide">
+        <img class="img-conten" src="../img-slice/techies.jpg">
+        </div>
+        </div>
+      </div>
     </section>
     </section>
     <div id="post-container" class="post general-position">

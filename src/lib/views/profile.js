@@ -170,6 +170,8 @@ export const profileTemplate = (user, posts, userid) => {
   const viewProfile = headerTemplate(user);
   // EDDIT USER INFORMARMATION
   const editProfile = viewProfile.querySelector('#editProfile');
+  const infromationwed = viewProfile.querySelector('#infromation-wed');
+  infromationwed.classList.add('hidden');
   editProfile.classList.remove('hidden');
 
   const loadProfile = viewProfile.querySelector('#loadProfile');
