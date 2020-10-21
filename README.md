@@ -3,11 +3,10 @@
   <img src="src/img/cuy.png">
 </p>
 Bienvenidos a Comunidad Dota...
-## Índice
 
 * [1. Resumen del proyecto](#1-resumen-del-proyecto)
 * [2. Definición del producto](#2-definición-del-producto)
-* [4. Objetivo](#4 Objetivo)
+* [4. Objetivo](#4-Objetivo)
 
 
 ## 1. Resumen del proyecto
