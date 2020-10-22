@@ -15,13 +15,16 @@ export default () => {
       <input type="password" id="signup-password" class="signup-form" placeholder="Contraseña">
       <input type="password" id="signup-confirm-password" class="signup-form" placeholder="Confirmar contraseña" required>
       <button type="submit" id="signup-submit" class="submit-form">Enviar</button>
+      <span id="alertSignup"></span>
       <button type="button" id="btn-logout">Volver</button>
     </form>
     `;
 
   // Start grabbing our DOM Element
+  const alertSignup = viewSignUp.querySelector('#alertSignup');
   const signUpEmail = viewSignUp.querySelector('#signup-email');
   const signupConfirmPassword = viewSignUp.querySelector('#signup-confirm-password');
+  const signuppassword = viewSignUp.querySelector('#signup-password');
   const signUpForm = viewSignUp.querySelector('#signup-form');
   const sigOut = viewSignUp.querySelector('#btn-logout');
   const userName = viewSignUp.querySelector('#signup-user-name');
@@ -36,11 +39,15 @@ export default () => {
     const userNameVal = userName.value;
     const lastNameVal = lastName.value;
     const nameVal = name.value;
-
-    createUser(signUpEmailVal, signupConfirmPasswordVal, userNameVal, lastNameVal, nameVal);
+    const signuppasswordVal = signuppassword.value;
+    if (signuppasswordVal === signupConfirmPasswordVal) {
+      createUser(signUpEmailVal, signupConfirmPasswordVal, userNameVal, lastNameVal, nameVal);
+    } else {
+      alertSignup.innerHTML = 'las contraseñas no coinciden';
+    }
 
     // Clear the form
-    signUpForm.reset();
+    // signUpForm.reset();
   });
 
   sigOut.addEventListener('click', () => {

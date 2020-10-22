@@ -4,7 +4,6 @@ import { singInGoogle, singInFacebook, loginUser } from '../firebase/auth.js';
 const readCreateUserDB = (useruid, emailUser, userPhotoUrl, username) => {
   readUserDB(useruid)
     .then((res) => {
-      console.log('res', res);
       if (res.empty) {
         createUserDB(useruid, emailUser, userPhotoUrl, username);
       } else {
@@ -17,7 +16,7 @@ const readCreateUserDB = (useruid, emailUser, userPhotoUrl, username) => {
 export const loginWithEmailAndPassword = (txtEmailVal, txtpasswordVal) => {
   loginUser(txtEmailVal, txtpasswordVal)
     .then((res) => {
-      console.log('res');
+      // console.log('res');
       readUserDB(res.user.uid)
         .then((querySnapshot) => {
           querySnapshot.forEach((refDoc) => {
@@ -30,9 +29,24 @@ export const loginWithEmailAndPassword = (txtEmailVal, txtpasswordVal) => {
     })
     .catch((error) => {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode === 'auth/invalid-email' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
-        throw errorMessage;
+      // const errorMessage = error.message;
+      const alertLogin = document.querySelector('#alertLogin');
+      switch (errorCode) {
+        case 'auth/invalid-email':
+          alertLogin.innerHTML = 'Correo inválido';
+          break;
+        case 'auth/user-disabled':
+          alertLogin.innerHTML = 'Comuníquese con el Administrador';
+          break;
+        case 'auth/user-not-found':
+          alertLogin.innerHTML = 'Usuario no registrado';
+          break;
+        case 'auth/wrong-password':
+          alertLogin.innerHTML = 'El correo o la contraseña ingresados son incorrectos';
+          break;
+        default:
+          alertLogin.innerHTML = 'Ha ocurrido un error inesperado';
+          break;
       }
     });
 };
@@ -46,7 +60,6 @@ export const loginGoogle = () => {
       localStorage.setItem('userEmail', res.user.email);
       localStorage.setItem('userPhoto', res.user.photoURL);
       */
-      console.log('entro aqui');
       window.location.hash = '#/home';
       readCreateUserDB(res.user.uid, res.user.email, res.user.photoURL, res.user.displayName);
     })

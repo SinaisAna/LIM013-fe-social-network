@@ -2,7 +2,7 @@ import {
   homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,
 } from '../firebase-controller/home-controller.js';
 import {
-  addLike, removeLike, uploadImage, readComments, addcommentsToDB, userInformation,
+  addLike, removeLike, uploadImage, readComments, addcommentsToDB, userInformation, readUserDB,
 } from '../firebase/firestore.js';
 import { headerTemplate } from './header.js';
 
@@ -12,7 +12,7 @@ const formatDate = (fecha) => {
   const fechaFin = `${fecha.getDate()} - ${fecha.getMonth() + 1} - ${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`;
   return fechaFin;
 };
-const postTemplate = (doc, user) => {
+const postTemplate = (doc, user, userpost) => {
   let divimage = '';
   if (doc.data().images != null) {
     divimage = `<img src="${doc.data().images}" width="100" heigth="150">`;
@@ -22,8 +22,8 @@ const postTemplate = (doc, user) => {
   div.classList = 'share-post';
   div.innerHTML = `
     <div class="container-user">
-    <span><img class="user-image-post" src="${doc.data().photo}"></span>
-    <h4 class="name-user">Publicado por ${doc.data().creatorName}
+    <span><img class="user-image-post" src="${userpost.photoUrl}"></span>
+    <h4 class="name-user">Publicado por ${userpost.name}
     <h4 class="name-user">${formatDate(doc.data().date.toDate())}</h4>
     <div id="show-options" class="hidden">
     <label class="ellipsis" id="ellipsis" ><i id="i" class="fas fa-ellipsis-h"></i>
@@ -126,7 +126,7 @@ const postTemplate = (doc, user) => {
           editTextPostToDB(doc.id, editTextPostVal, newDate);
         });
       } else if (selectedOption === 'delete') {
-        console.log('Data eliminada');
+        // console.log('Data eliminada');
         deletePostToDB(doc.id);
       }
     });
@@ -174,6 +174,7 @@ export const profileTemplate = (user, posts, userid) => {
   infromationwed.classList.add('hidden');
   editProfile.classList.remove('hidden');
 
+  const nameProfileVal = viewProfile.querySelector('#name');
   const loadProfile = viewProfile.querySelector('#loadProfile');
   const birthdayVal = viewProfile.querySelector('#add-birthday');
   const occupationVal = viewProfile.querySelector('#occupation-work');
@@ -202,6 +203,7 @@ export const profileTemplate = (user, posts, userid) => {
     const hobbies = hobbiesVal.value;
     const userLastname = lastnameVal.value;
     const userFirstname = firstnameVal.value;
+    const nameProfile = nameProfileVal.value;
     loadProfile.classList.add('hidden');
     editProfile.classList.remove('hidden');
     profileEdditNew.classList.remove('hidden');
@@ -210,13 +212,13 @@ export const profileTemplate = (user, posts, userid) => {
     const datePhotoNew = new Date().toString();
     if (newImageUser == null) {
       // eslint-disable-next-line max-len
-      userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, user.photoUrl)
+      userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, user.photoUrl, nameProfile)
         .then(() => window.location.hash = '#/profile');
     } else {
-      console.log(userid, birthday, occupation, hobbies, userFirstname, userLastname);
+      // console.log(userid, birthday, occupation, hobbies, userFirstname, userLastname);
       uploadImage(datePhotoNew, newImageUser)
       // eslint-disable-next-line max-len
-        .then((url) => userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, url)
+        .then((url) => userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, url, nameProfile)
           .then(() => window.location.hash = '#/profile'));
     }
   });
@@ -252,7 +254,13 @@ export const profileTemplate = (user, posts, userid) => {
   // eslint-disable-next-line no-shadow
   posts.forEach((post) => {
     const messagePost = viewProfile.querySelector('#message-post');
-    messagePost.appendChild(postTemplate(post, user));
+    readUserDB(post.data().creatorID)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((refDoc) => {
+          const userpost = refDoc.data();
+          messagePost.appendChild(postTemplate(post, user, userpost));
+        });
+      });
   });
   // Share post
   btnShare.addEventListener('click', () => {
@@ -268,7 +276,7 @@ export const profileTemplate = (user, posts, userid) => {
     } else {
       uploadImage(datePhoto, postImage)
         // eslint-disable-next-line max-len
-        .then((url) => console.log(url) || createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, url));
+        .then((url) => createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, url));
     }
   });
 

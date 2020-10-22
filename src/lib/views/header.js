@@ -31,6 +31,7 @@ export const headerTemplate = (user) => {
      <form>
      <i id="btn-photo-new-user" class="fas fa-pencil-alt"></i>
      <input type="file" id="new-photo-user-profile" class="new-photo-user-profile">
+     <input type="text" id="name" class="add-inf" placeholder="${user.name}">
      <input type="text" id="lastname" class="add-inf" placeholder="${user.lastname}">
      <input type="text" id="firstname" class="add-inf" placeholder="${user.firstname}">
      <input type="text" id="email" class="add-inf" placeholder="${user.email}">

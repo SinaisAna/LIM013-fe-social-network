@@ -2,7 +2,7 @@ import {
   homeLogOut, createAddNoteToDB, editTextPostToDB, deletePostToDB,
 } from '../firebase-controller/home-controller.js';
 import {
-  addLike, removeLike, uploadImage, readComments, addcommentsToDB,
+  addLike, removeLike, uploadImage, readComments, addcommentsToDB, readUserDB,
 } from '../firebase/firestore.js';
 import { headerTemplate } from './header.js';
 
@@ -11,7 +11,7 @@ const formatDate = (fecha) => {
   const fechaFin = `${fecha.getDate()} - ${fecha.getMonth() + 1} - ${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`;
   return fechaFin;
 };
-const postTemplate = (doc, user) => {
+const postTemplate = (doc, user, userpost) => {
   let divimage = '';
   if (doc.data().images != null) {
     divimage = `<img src="${doc.data().images}" width="100" heigth="150">`;
@@ -21,8 +21,8 @@ const postTemplate = (doc, user) => {
   div.classList = 'share-post';
   div.innerHTML = `
   <div class="container-user">
-  <span><img class="user-image-post" src="${doc.data().photo}"></span>
-  <h4 class="name-user">Publicado por ${doc.data().creatorName}
+  <span><img class="user-image-post" src="${userpost.photoUrl}"></span>
+  <h4 class="name-user">Publicado por ${userpost.name}
   <h4 class="name-user">${formatDate(doc.data().date.toDate())}</h4>
   <div id="show-options" class="hidden">
   <label class="ellipsis" id="ellipsis" ><i id="i" class="fas fa-ellipsis-h"></i>
@@ -125,7 +125,7 @@ const postTemplate = (doc, user) => {
           editTextPostToDB(doc.id, editTextPostVal, newDate);
         });
       } else if (selectedOption === 'delete') {
-        console.log('Data eliminada');
+        // console.log('Data eliminada');
         deletePostToDB(doc.id);
       }
     });
@@ -149,7 +149,7 @@ const postTemplate = (doc, user) => {
 
     if (container) {
       container.innerHTML = '';
-      console.log(comments, 'comen');
+      // console.log(comments, 'comen');
       comments.forEach((comment) => {
         if (idPost === comment.postsID) {
           const divComment = commentTemplate(comment);
@@ -198,13 +198,19 @@ export const homeTemplate = (user, posts) => {
   // eslint-disable-next-line no-shadow
   posts.forEach((post) => {
     const messagePost = viewProfile.querySelector('#message-post');
-    messagePost.appendChild(postTemplate(post, user));
+    readUserDB(post.data().creatorID)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((refDoc) => {
+          const userpost = refDoc.data();
+          messagePost.appendChild(postTemplate(post, user, userpost));
+        });
+      });
   });
   // Share post
   btnShare.addEventListener('click', () => {
     const textPostVal = textPost.value;
     const postVal = post.value;
-
+    console.log(postVal);
     const date = new Date();
 
     const datePhoto = new Date().toString();
@@ -214,7 +220,7 @@ export const homeTemplate = (user, posts) => {
     } else {
       uploadImage(datePhoto, postImage)
         // eslint-disable-next-line max-len
-        .then((url) => console.log(url) || createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, url));
+        .then((url) => createAddNoteToDB(user.uid, user.name, textPostVal, date, postVal, user.photoUrl, url));
     }
   });
 

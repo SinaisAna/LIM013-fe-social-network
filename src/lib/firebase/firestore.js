@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 // eslint-disable-next-line max-len
 export const createUserDB = (useruid, emailUser, userPhotoUrl, username, userLastname, userFirstname) => firebase.firestore()
   .collection('users').add({
@@ -14,13 +15,11 @@ export const createUserDB = (useruid, emailUser, userPhotoUrl, username, userLas
   });
 
 // ADD INF
-export const userInformation = (iduser, birthdayVal, occupationVal, hobbiesVal, userFirstname, userLastname, photoUrl) => firebase.firestore().collection('users')
+export const userInformation = (iduser, birthdayVal, occupationVal, hobbiesVal, userFirstname, userLastname, photoUrl, name) => firebase.firestore().collection('users')
   .doc(iduser).update({
     // eslint-disable-next-line max-len
-    birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: userFirstname, lastname: userLastname, photoUrl: photoUrl,
+    birthday: birthdayVal, occupation: occupationVal, hobbies: hobbiesVal, firstname: userFirstname, lastname: userLastname, photoUrl: photoUrl, name: name,
   });
-  
-
 export const getUserInformation = (callback) => firebase.firestore().collection('users')
   .onSnapshot((querySnapshot) => {
     const data = [];

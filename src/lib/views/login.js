@@ -14,7 +14,7 @@ export default () => {
       <h1 class="fonts">Comunidad Dota</h1>
       <h3 class="welcome">¡Bienvenid@, Doteros!</h3>
       <form id="login-form">
-        <input type="text" id="txt-email" class="input" placeholder="Nombre de usuario o Email">
+        <input type="text" id="txt-email" class="input" placeholder="Email">
         <p id="alert-txt-email"></p>
         <input type="password" id="txt-password" class="input" placeholder="Contraseña">
         <p id="alert-txt-password"></p>
@@ -26,6 +26,7 @@ export default () => {
       <button id="btn-google" class="btn-image"><img src="./img/icon-google.png" width="50px" heigth="50px"></button>
       <button id ="btn-facebook"class="btn-image"><img src="./img/icon-facebook.png" width="50px" heigth="50px"></button>
     </section>
+    <span id="alertLogin"></span>
     <div class="registerUser">
     <p>¿No tienes una cuenta?<a href="#/signup" id = "btn-register" class="btn-register">Regístrate</a></p>
     </div>
@@ -34,6 +35,8 @@ export default () => {
     `;
 
   // Start grabbing our DOM Element
+  const alerttxtpassword = viewLogin.querySelector('#alert-txt-password');
+  const alerttxtemail = viewLogin.querySelector('#alert-txt-email');
   const txtEmail = viewLogin.querySelector('#txt-email');
   const txtpassword = viewLogin.querySelector('#txt-password');
   const loginForm = viewLogin.querySelector('#login-form');
@@ -44,24 +47,24 @@ export default () => {
 
     const txtEmailVal = txtEmail.value;
     const txtpasswordVal = txtpassword.value;
-    console.log('paso');
-
-    loginWithEmailAndPassword(txtEmailVal, txtpasswordVal);
-    // Clear the login form
-    loginForm.reset();
+    if (txtEmailVal === '') {
+      alerttxtemail.innerText = '⚠️ Debe ingresar su email';
+    } else if (txtpasswordVal === '') {
+      alerttxtpassword.innerText = '⚠️ Debe ingresar su contraseña';
+    } else {
+      loginWithEmailAndPassword(txtEmailVal, txtpasswordVal);
+    }
   });
 
   // Sign in with google
   viewLogin.querySelector('#btn-google').addEventListener('click', () => {
     // event.preventDefault();
-    // console.log('hola entre aqui');
     loginGoogle();
   });
 
   // Sign in with facebook
   viewLogin.querySelector('#btn-facebook').addEventListener('click', (event) => {
     event.preventDefault();
-    // console.log("Hola ingresaste a Facebook");
     loginFacebook();
   });
   return viewLogin;
