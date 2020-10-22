@@ -5,9 +5,9 @@ import {
   // eslint-disable-next-line import/named
   getUserInformation,
   readUserDB,
-  // addLike,
-  // editTextPost,
-  // readAddNotesToDB,
+  addLike,
+  editTextPost,
+  readAddNotesToDB,
 } from '../src/lib/firebase/firestore';
 
 const fixtureData = {
@@ -26,36 +26,19 @@ const fixtureData = {
 
       },
     },
-    _Coleccion_: {
-      pruebas: {
-        __doc__: {
-          GJR4GH4f: {
-            content: 'este es un post',
-            likes: [],
-            state: 'private',
-            creatorName: 'user-a',
-            creatorID: '9URN4KSD9kw9HKNlo47B',
-            photo: 'photo.jpg',
-            image: 'myImagen1.jpg',
-          },
-        },
-      },
-    },
   },
-  __collections__: {
-    pruebas: {
-      __doc__: {
-        abc1d: {
-          note: 'Hello World',
-          date: '',
-        },
-
-        abc2d: {
-          note: 'Good morning',
-          date: '',
-        },
-
+  post: {
+    __doc__: {
+      abc1d: {
+        note: 'Hello World',
+        date: '',
       },
+
+      abc2d: {
+        note: 'Good morning',
+        date: '',
+      },
+
     },
   },
 };
@@ -65,7 +48,7 @@ global.firebase = new MockFirebase(fixtureData, {
 });
 
 describe('lista de usuarios', () => {
-  it('Debería porder agregar un usuario', (done) => createUserDB('123', 'example24@gmail.com', 'testimail.png', 'ana')
+  it('Debería porder agregar un usuario', (done) => createUserDB('123', 'example24@gmail.com', 'testimail.png', 'ana', 'sinais', 'guandad')
     .then(() => getUserInformation(
       (data) => {
         const result = data.find((users) => users.name === 'ana');
@@ -91,19 +74,19 @@ describe('readUserDB', () => {
       },
     )));
 });
-/*
+
 describe('addLike', () => {
   it('debería ser una función', () => {
     expect(typeof addLike).toBe('function');
   });
   // eslint-disable-next-line max-len
   it('Debería poder dar like con mi usuario logueado', (done) => addLike('9URN4KSD9kw9HKNlo47B',
-  'pE6kjzWNn2ULhM3NWsljAP7BV662')
+    'pE6kjzWNn2ULhM3NWsljAP7BV662')
     .then((data) => {
       // eslint-disable-next-line no-undef
       readComments(data.doc.idPost,
         (likes) => {
-          const userLikes = likes.find((pruebas) => pruebas.uid === 'pE6kjzWNn2ULhM3NWsljAP7BV662');
+          const userLikes = likes.find((post) => post.uid === 'pE6kjzWNn2ULhM3NWsljAP7BV662');
           expect(userLikes.idPost).toBe('9URN4KSD9kw9HKNlo47B');
           done();
         });
@@ -133,4 +116,3 @@ describe('Delete a post', () => {
       },
     )));
 });
-*/
