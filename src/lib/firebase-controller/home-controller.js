@@ -48,8 +48,8 @@ export const readUser = (uid) => {
       });
     });
 };
-export const editTextPostToDB = (docID, changeNote, newDate) => {
-  editTextPost(docID, changeNote, newDate)
+export const editTextPostToDB = (docID, objChangeEdit) => {
+  editTextPost(docID, objChangeEdit)
     .then(() => {
       console.log('note updated');
     });

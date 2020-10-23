@@ -123,7 +123,10 @@ const postTemplate = (doc, user, userpost) => {
           const editTextPostVal = div.querySelector('#edit-text-post').value;
 
           const newDate = new Date();
-          editTextPostToDB(doc.id, editTextPostVal, newDate);
+          editTextPostToDB(doc.id, {
+            note: editTextPostVal,
+            date: newDate,
+          });
         });
       } else if (selectedOption === 'delete') {
         // console.log('Data eliminada');

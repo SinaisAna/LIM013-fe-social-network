@@ -5,7 +5,7 @@ const readCreateUserDB = (useruid, emailUser, userPhotoUrl, username) => {
   readUserDB(useruid)
     .then((res) => {
       if (res.empty) {
-        createUserDB(useruid, emailUser, userPhotoUrl, username);
+        createUserDB(useruid, emailUser, userPhotoUrl, username, '', '');
       } else {
         res.forEach(() => {
         });
