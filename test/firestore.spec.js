@@ -5,9 +5,10 @@ import {
   // eslint-disable-next-line import/named
   getUserInformation,
   readUserDB,
-  addLike,
-  editTextPost,
-  readAddNotesToDB,
+  // addLike,
+  // editTextPost,
+  // readAddNotesToDB,
+// eslint-disable-next-line import/named
 } from '../src/lib/firebase/firestore';
 
 const fixtureData = {

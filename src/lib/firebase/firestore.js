@@ -114,9 +114,3 @@ export const readComments = (callback, idPost) => {
       callback(comment, idPost);
     });
 };
-const gatos = {
-  raza:"siames",
-  altura: 60,
-  color: "marron",
-  somido: () => 
-}

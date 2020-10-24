@@ -216,12 +216,14 @@ export const profileTemplate = (user, posts, userid) => {
     if (newImageUser == null) {
       // eslint-disable-next-line max-len
       userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, user.photoUrl, nameProfile)
+        // eslint-disable-next-line no-return-assign
         .then(() => window.location.hash = '#/profile');
     } else {
       // console.log(userid, birthday, occupation, hobbies, userFirstname, userLastname);
       uploadImage(datePhotoNew, newImageUser)
       // eslint-disable-next-line max-len
         .then((url) => userInformation(userid, birthday, occupation, hobbies, userFirstname, userLastname, url, nameProfile)
+          // eslint-disable-next-line no-return-assign
           .then(() => window.location.hash = '#/profile'));
     }
   });

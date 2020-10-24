@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import { createUserDB } from '../firebase/firestore.js';
 import { createUserAccount } from '../firebase/auth.js';
 
