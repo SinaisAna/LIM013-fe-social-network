@@ -1,36 +1,44 @@
 import MockFirebase from 'mock-cloud-firestore';
 
 import {
-  readAddNotesToDB, addNotesToDB,
+  addNotesToDB, allPosts, deletePost, editTextPost, addcommentsToDB, readComments,
 } from '../src/lib/firebase/firestore.js';
 
 const fixtureData = {
   __collection__: {
-    posts: {
+    publications: {
       __doc__: {
         a01: {
-          uid: 'user1',
-          user: 'Mariana',
-          url: '',
-          privacy: '0',
+          creatorID: '46643',
+          creatorName: 'ana',
+          note: 'hola gamers',
+          date: '',
+          mode: '',
           photo: '',
-          likes: [],
-          email: '',
-          datetime: '202051919282',
-          date: '19/5/2020',
-          content: 'Probando post',
+          likes: ['user01', 'user02'],
+          images: '',
         },
         a02: {
-          uid: 'user2',
-          user: 'Edward',
-          url: '',
-          privacy: '1',
+          creatorID: '77755',
+          creatorName: 'sora',
+          note: 'hola stream',
+          date: '',
+          mode: '',
           photo: '',
-          likes: [],
-          email: '',
-          datetime: '202051919282',
-          date: '19/5/2020',
-          content: 'Probando post',
+          likes: ['user01', 'user02'],
+          images: '',
+        },
+      },
+    },
+    comments: {
+      __doc__: {
+        comments001: {
+          creatorID: '77755',
+          photoUsers: '',
+          comment: 'grito de guerra',
+          date: '',
+          postsID: '',
+          userName: 'ana',
         },
       },
     },
@@ -38,17 +46,51 @@ const fixtureData = {
 };
 global.firebase = new MockFirebase(fixtureData, { isNaiveSnapshotListenerEnabled: true });
 
-describe('Publicar post', () => {
-  // eslint-disable-next-line no-unused-vars
-  it('Debería poder publicar un post', (done) => addNotesToDB('user3', 'Mirella', '', '0', '', 'prueba hola', '', '', '', [])
-    .then(() => {
-      const callback = (posts) => {
-        const result = posts.find((element) => element.content === 'prueba hola');
-        // eslint-disable-next-line no-console
-        console.log(result);
-        expect(result.user).toBe('user3');
-        done();
-      };
-      readAddNotesToDB(callback);
-    }));
+describe('create note', () => {
+  it('Deberia de poder agregar  note', (done) => addNotesToDB('', '', 'Hola Comuinidad', '', '', '', '[]', '').then(() => {
+    const callback = (note) => {
+      console.log(note);
+      const result = note.find(
+        (element) => element.note === 'Hola Comuinidad',
+      );
+      expect(result.note).toEqual('Hola Comuinidad');
+      done();
+    };
+    allPosts(callback);
+  }));
+});
+describe('update note', () => {
+  it('Deberia de poder actualizar note ', (done) => editTextPost('a02', 'hola stream').then(() => {
+    const callback = (note) => {
+      console.log(note);
+      const result = note.find((element) => element.id === 'a02');
+      expect(result.note).toBe('hola stream');
+      done();
+    };
+    allPosts(callback);
+  }));
+});
+describe('delete note', () => {
+  it('Deberia de poder eliminar un note', (done) => deletePost('a02').then(() => {
+    const callback = (note) => {
+      console.log(note);
+      const result = note.find((element) => element.id === 'a02');
+      expect(result).toBe(undefined);
+      done();
+    };
+    allPosts(callback);
+  }));
+});
+describe('create comments', () => {
+  it('Deberia de poder agregar comentarios según post', (done) => addcommentsToDB('', 'grito de guerra', '', 'a01', '', 'ana').then(() => {
+    const callback = (comment) => {
+      console.log(comment);
+      const result = comment.find(
+        (element) => element.comment === ('grito de guerra'),
+      );
+      expect(result.comment).toBe('grito de guerra');
+      done();
+    };
+    readComments(callback, 'a01');
+  }));
 });

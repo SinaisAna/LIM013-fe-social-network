@@ -47,6 +47,14 @@ export const addNotesToDB = (userID, name, createNote, datePost, userMode, photo
     images: image,
 
   });
+export const allPosts = (callback) => firebase.firestore().collection('publications')
+  .onSnapshot((querySnapshot) => {
+    const output = [];
+    querySnapshot.forEach((doc) => {
+      output.push({ id: doc.id, ...doc.data() });
+    });
+    callback(output);
+  });
 
 // callbackfn es un funcion como parametro lo mando
 export const readAddNotesToDB = (callbackfn) => firebase.firestore()
