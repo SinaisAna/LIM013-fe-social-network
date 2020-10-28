@@ -39,7 +39,7 @@ A continuación te proporcionamos el layout (diseño) de la vista mobile y deskt
 
 - Vista dos Mobile 
 
-  ![mobile](img.readme/mobileHome.jpg)
+  ![mobile](img.readme/mobilepHome.jpg)
 
 ### Múltiples vistas
 
