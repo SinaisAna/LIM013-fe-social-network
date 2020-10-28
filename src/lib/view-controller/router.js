@@ -4,20 +4,26 @@ import { readUserDB, readAddNotesToDB, readAddNotesToDBP } from '../firebase/fir
 import { components } from '../views/components.js';
 
 // eslint-disable-next-line consistent-return
-const changeTemplate = (hash) => {
+export const changeTemplate = (route) => {
+  window.location.hash = route;
   const container = document.getElementById('container');
   container.innerHTML = '';
+  let routeSelected = '';
   // eslint-disable-next-line no-console
-  console.log(hash);
-  switch (hash) {
+  console.log(route);
+  switch (route) {
     case '':
     case '#':
     case '#/':
-    { return container.appendChild(components.loginTemplateProp()); }
+      routeSelected = container.appendChild(components.loginTemplateProp());
+      break;
     case '#/login':
-    { return container.appendChild(components.loginTemplateProp()); }
+      routeSelected = container.appendChild(components.loginTemplateProp());
+      break;
     case '#/signup':
-    { return container.appendChild(components.signUpTemplateProp()); }
+      // eslint-disable-next-line no-unused-vars
+      routeSelected = container.appendChild(components.signUpTemplateProp());
+      break;
     case '#/profile':
     case '#/edit':
     case '#/home':
@@ -27,12 +33,12 @@ const changeTemplate = (hash) => {
           readUserDB(user.uid)
             .then((querySnapshot) => {
               querySnapshot.forEach((refDoc) => {
-                if (hash === '#/home') {
+                if (route === '#/home') {
                   readAddNotesToDB((posts) => {
                     // eslint-disable-next-line no-shadow
                     const user = refDoc.data();
                     container.innerHTML = '';
-                    return container.appendChild(components.homeTemplateProp(user, posts));
+                    routeSelected = container.appendChild(components.homeTemplateProp(user, posts));
                   });
                 } else {
                   readAddNotesToDBP((posts) => {
@@ -40,7 +46,7 @@ const changeTemplate = (hash) => {
                     const user = refDoc.data();
                     container.innerHTML = '';
                     // eslint-disable-next-line max-len
-                    return container.appendChild(components.profileTemplateProp(user, posts, refDoc.id));
+                    routeSelected = container.appendChild(components.profileTemplateProp(user, posts, refDoc.id));
                   }, user.uid);
                 }
               });
@@ -53,8 +59,7 @@ const changeTemplate = (hash) => {
     }
     // eslint-disable-next-line no-fallthrough
     default:
-      return container.appendChild(components.errorPageProp());
+      routeSelected = container.appendChild(components.errorPageProp());
   }
+  return routeSelected;
 };
-
-export { changeTemplate };
