@@ -30,6 +30,10 @@
         margin: 50px 0;
         line-height: 30px;
     }
+    #infromation-wed {
+         float: none; 
+        margin: 5%;
+    }
     #check-and-uncheck:checked ~ ul{
         left:0;
     }

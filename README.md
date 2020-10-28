@@ -25,17 +25,21 @@ Dota cuy es una red social destinada a la comidad Dota. Esta plataforma iteracti
 
 A continuación te proporcionamos el layout (diseño) de la vista mobile y desktop.
 
-- Vista mobile
-
-  ![mobile]()
-  
-- Vista dos mobile 
-
-  ![mobile]()
-
 - Vista Desktop
 
-  ![desktop]()
+  ![mobile](src/img/desktop.JPG)
+  
+- Vista dos Desktop 
+
+  ![mobile](src/img/desktopHome.JPG)
+
+- Vista Mobile
+
+  ![desktop](src/img/login.mobile.JPG)
+
+- Vista dos Mobile 
+
+  ![mobile](src/img/mobileHomeJPG)
 
 ### Múltiples vistas
 
