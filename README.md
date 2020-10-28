@@ -27,19 +27,19 @@ A continuación te proporcionamos el layout (diseño) de la vista mobile y deskt
 
 - Vista Desktop
 
-  ![mobile](src/img/desktop.JPG)
+  ![mobile](img.readme/desktop.JPG)
   
 - Vista dos Desktop 
 
-  ![mobile](src/img/desktopHome.JPG)
+  ![mobile](img.readme/desktopHome.JPG)
 
 - Vista Mobile
 
-  ![desktop](src/img/login.mobile.JPG)
+  ![desktop](img.readme/login.mobile.JPG)
 
 - Vista dos Mobile 
 
-  ![mobile](src/img/mobileHomeJPG)
+  ![mobile](img.readme/mobileHomeJPG)
 
 ### Múltiples vistas
 
